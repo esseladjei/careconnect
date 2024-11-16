@@ -1,0 +1,27 @@
+services:
+  POSTGRES:
+    container_name: BackendDB
+    image: postgres:13
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - '5432:5432'
+  app:
+    build: .
+    container_name: NodeRestAPI
+    volumes:
+      - .:/app
+    ports:
+      - '5000:5000'
+    depends_on:
+      - POSTGRES
+networks:
+  careconnect-network:
+    driver: bridge
+
+volumes:
+  pgdata:
