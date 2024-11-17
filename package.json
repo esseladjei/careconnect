@@ -9,7 +9,7 @@
       "test:unit": "vitest run src/test/unit",
       "test:ui": "vitest --ui",
       "test:e2e": "vitest run src/test/e2e",
-      "lint": "eslint && echo \"done\" "
+      "lint": "eslint && echo \"done\""
    },
    "type": "module",
    "keywords": [],
