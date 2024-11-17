@@ -10,6 +10,6 @@ app.use(morgan('dev'));
 app.use('/api', UserRoute);
 
 app.get('/', (req: Request, res: Response) => {
-   res.json('careconnect');
+   res.jsonp('careconnect');
 });
 export default app;
