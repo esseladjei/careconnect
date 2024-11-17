@@ -1,15 +1,15 @@
-FROM node:18
+FROM node:20
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json yarn.lock ./
 
-RUN npm install
+RUN yarn install
 
 COPY . .
 
 EXPOSE 5000
 
-RUN npm run build
+RUN yarn run build
 
-CMD ["node", "dist/server.js"]
+CMD ["yarn", "run","dev"]
