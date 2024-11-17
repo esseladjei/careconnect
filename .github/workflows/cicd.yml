@@ -1,34 +1,36 @@
 name: careconnect CI/CD Pipeline
 
-on: 
-  pull_request: 
-    branches: [develop]
+on:
+   pull_request:
+      branches: [develop]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+   build:
+      runs-on: ubuntu-latest
 
-    steps: 
+      steps:
+         - name: Checkout repository
+           uses: actions/checkout@v4
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
+         - name: Build docker image
+           run: docker build . --tag careconnect-backend:$(date +%s)
 
-      - name: Build docker image
-        run:  docker build . --tag careconnect-backend:$(date +%s)
+         - name: Setup Nodejs server
+           uses: actions/setup-node@v2
+           with:
+              node-version: '20'
 
-      - name: Setup Nodejs server
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-     
-      - name: Install dependencies
-        run: npm install
+         - name: Install dependencies
+           run: npm install
 
-      - name: Run Linter
-        run:  npm run lint
-        
-      - name: Run Unit Test
-        run:  npm run test:unit
+         - name: Run Linter
+           run: npm run lint
 
-      - name: Run End-to-End Test
-        run:  npm run test:e2e"
+         - name: Run Unit Test
+           run: npm run test:unit
+
+         - name: Run End-to-End Test
+           run: npm run test:e2e"
+
+         - name: Build Application
+           run: npm run build
