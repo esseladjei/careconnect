@@ -2,12 +2,8 @@ import {
    Entity,
    PrimaryGeneratedColumn,
    Column,
-   OneToOne,
-   JoinColumn,
    BaseEntity,
 } from 'typeorm';
-
-import { User } from './users.entity.ts';
 @Entity()
 export class Insurance extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')

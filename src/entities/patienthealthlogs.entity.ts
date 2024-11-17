@@ -1,11 +1,9 @@
 import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   OneToOne,
-   JoinColumn,
-   BaseEntity,
-   ManyToOne,
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 
 import { Patient } from './patient.entity.ts';

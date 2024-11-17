@@ -1,7 +1,6 @@
-import { resolve } from 'path';
 import app from './app.ts';
 import { AppDataSource } from './config/db.ts';
-import { rejects } from 'assert';
+
 
 const startServer = () => {
    return new Promise<string>((resolve, reject) => {
