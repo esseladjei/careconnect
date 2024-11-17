@@ -1,6 +1,5 @@
-import 'reflect-metadata';
-import app from './app.js';
-import { AppDataSource } from './config/db.js';
+import app from './app.ts';
+import { AppDataSource } from './config/db.ts';
 
 AppDataSource.initialize()
    .then((db) => {

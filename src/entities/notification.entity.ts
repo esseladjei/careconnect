@@ -2,31 +2,37 @@ import {
    Entity,
    PrimaryGeneratedColumn,
    Column,
-   OneToOne,
-   JoinColumn,
+   ManyToOne,
    BaseEntity,
+   Timestamp,
 } from 'typeorm';
-
 import { User } from './users.entity.ts';
+
 @Entity()
-export class Insurance extends BaseEntity {
+export class Notification extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   insuranceid!: number;
+   notificationId!: number;
 
    @Column({
       type: 'varchar',
    })
-   providername: string;
+   message: string;
+
+   @Column({
+      type: 'timestamp',
+   })
+   notification_date: Timestamp;
+
    @Column({
       type: 'varchar',
    })
-   policynumber: string;
+   type: string;
+
    @Column({
       type: 'varchar',
    })
-   coveragedetails: string;
-   @Column({
-      type: 'varchar',
-   })
-   contactinfo: string;
+   status: string;
+
+   @ManyToOne(() => User, (user) => user.notifications)
+   user: User;
 }
