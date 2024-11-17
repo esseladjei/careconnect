@@ -5,28 +5,31 @@ import {
    OneToOne,
    JoinColumn,
    BaseEntity,
+   ManyToOne,
 } from 'typeorm';
 
-import { User } from './users.entity.ts';
+import { Patient } from './patient.entity.ts';
+
 @Entity()
-export class Insurance extends BaseEntity {
+export class PatientHealthLogs extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   insuranceid!: number;
+   logId!: number;
 
    @Column({
       type: 'varchar',
    })
-   providername: string;
+   symptom_log: string;
+
    @Column({
       type: 'varchar',
    })
-   policynumber: string;
+   vitals_log: string;
+
    @Column({
       type: 'varchar',
    })
-   coveragedetails: string;
-   @Column({
-      type: 'varchar',
-   })
-   contactinfo: string;
+   notes: string;
+
+   @ManyToOne(() => Patient, (patient) => patient.healthLogs)
+   patient: Patient;
 }

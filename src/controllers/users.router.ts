@@ -1,13 +1,10 @@
 import express, { Request, Response } from 'express';
-import { User } from '../entities/Users.js';
+import { AddUser } from 'src/services/user.service.ts';
+
 const route = express.Router();
 
-route.get('/user', async (req: Request, res: Response) => {
-   const user = User.create({
-      name: 'test',
-      email: 'test',
-   });
-   await user.save();
+route.post('/user', async (req: Request, res: Response) => {
+   const user = await AddUser(req.body);
    res.json(user);
 });
 
