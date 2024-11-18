@@ -4,8 +4,8 @@ import { Role } from 'src/types/entity.types.ts';
 @Entity()
 export class User extends Biodata {
    @PrimaryGeneratedColumn('uuid')
-   userid!: number;
-
+   userid: string;
+  
    @Column({
       type: 'varchar',
    })

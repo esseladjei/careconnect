@@ -1,3 +1,5 @@
+import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
+
 export enum Role {
    DOCTOR = 'doctor',
    PATIENT = 'patient',
@@ -5,8 +7,27 @@ export enum Role {
 export interface UserType {
    firstname: string;
    lastname: string;
-   password: string;
-   gender: string;
+   othername: string;
    email: string;
+   dateofbirth: Date;
+   gender: string;
+   isActive: string;
+   telephonenumber: string;
+   address: string;
+   profilePictureUrl: string;
    role: Role;
+   password: string;
+}
+
+export namespace TypeORMResponse {
+   export interface RecordNotFound {
+      statusCode?: number | 404;
+      message: string;
+      queryIdentifier?: string;
+   }
+   export interface Signature {
+      careconnect: RecordNotFound;
+   }
+
+   export type ApiResult = UserType | InsertResult | UpdateResult | DeleteResult | Signature;
 }
