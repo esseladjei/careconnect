@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:20
 
 WORKDIR /app
 
@@ -12,4 +12,4 @@ EXPOSE 5000
 
 RUN npm run build
 
-CMD ["node", "dist/server.js"]
+CMD ["npm", "run","dev"]

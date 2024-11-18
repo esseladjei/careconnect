@@ -11,7 +11,6 @@ import {
 import { Patient } from './patient.entity.ts';
 import { Doctor } from './doctor.entity.ts';
 import { MedicalRecord } from './medicalrecord.entity.ts';
-import { Payment } from './payment.entity.ts';
 import { VideoSession } from './videosession.entity.ts';
 @Entity()
 export class Appointment extends BaseEntity {

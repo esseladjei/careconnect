@@ -1,13 +1,10 @@
 import {
-   Entity,
-   PrimaryGeneratedColumn,
-   OneToOne,
-   JoinColumn,
-   Column,
-   ManyToMany,
+  Column,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 import { Biodata } from './biodata.entity.ts';
-import { User } from './users.entity.ts';
 import { Doctor } from './doctor.entity.ts';
 
 @Entity()

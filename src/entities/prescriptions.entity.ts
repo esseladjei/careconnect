@@ -1,18 +1,13 @@
 import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   OneToOne,
-   JoinColumn,
-   BaseEntity,
-   ManyToOne,
-   ManyToMany,
-   JoinTable,
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 
 import { MedicalRecord } from './medicalrecord.entity.ts';
 import { Pharmacy } from './pharmacy.entity.ts';
-import { Specialisation } from './sepcialisation.entity.ts';
 
 @Entity()
 export class Prescription extends BaseEntity {

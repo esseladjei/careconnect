@@ -11,10 +11,7 @@ import { Patient } from './patient.entity.ts';
 import { Doctor } from './doctor.entity.ts';
 import { Appointment } from './appointment.entity.ts';
 import { Prescription } from './prescriptions.entity.ts';
-const enum Role {
-   DOCTOR = 'doctor',
-   PATIENT = 'patient',
-}
+
 @Entity()
 export class MedicalRecord extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
