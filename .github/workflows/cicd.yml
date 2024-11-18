@@ -5,7 +5,7 @@ on:
       branches: [develop]
 
 jobs:
-   build:
+   setup:
       runs-on: ubuntu-latest
 
       steps:
@@ -23,14 +23,43 @@ jobs:
          - name: Install dependencies
            run: npm install
 
-         - name: Run Linter
-           run: npm run lint
+   lint:
+       runs-on: ubuntu-latest
+       needs: setup
 
-         - name: Run Unit Test
-           run: npm run test:unit
+       steps:
+           - name: Run Linter
+             run: npm run lint
+ 
+   test:
+      runs-on: ubuntu-latest
+      needs: lint
 
-         - name: Run End-to-End Test
-           run: npm run test:e2e"
+      steps:
+      - name: Run Unit Test
+        run: npm run test:unit
 
-         - name: Build Application
-           run: npm run build
+      - name: Run End-to-End Test
+        run: npm run test:e2e"
+
+   build:
+      runs-on: ubuntu-latest
+      needs: test
+      steps:
+      
+      - name: Build Application
+        run: npm run build           
+
+   deploy:
+    runs-on: ubuntu-latest
+    needs: build  # Ensure deployment only happens after build
+    if: ${{ secrets.AWS_ACCESS_KEY_ID != '' }}  # Skip if no AWS credentials
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Mock Deployment (Skip real deployment)
+      run: |
+        echo "Skipping deployment as AWS server is not available"
+        echo "Mocking deployment process..."
