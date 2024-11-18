@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
-import { User } from 'src/entities/users.entity.ts';
 import { TypeORMResponse } from 'src/types/entity.types.ts';
 
 export const hashPassword = async (password: string): Promise<string> => {
@@ -14,16 +13,16 @@ export const verifyPassword = async (userpassword: string, storedPassword: strin
    return passwordMatched;
 };
 
-export const notFoundResponse = (message: TypeORMResponse.RecordNotFound): TypeORMResponse.Signature => {
+export const formatResponse = <T>(message: T): { careconnect: T } => {
    return {
       careconnect: message,
    };
 };
 
-export const sendResponse = <T extends TypeORMResponse.ApiResult>(res: Response<any, Record<string, any>>, apiResults: T) => {
-   if ('careconnect' in apiResults) {
-      const { careconnect } = apiResults as TypeORMResponse.Signature;
-      res.status(careconnect?.statusCode).json(apiResults.careconnect);
+export const sendResponse = <T extends TypeORMResponse.Signature>(res: Response<any, Record<string, any>>, apiResults: T) => {
+   const { careconnect } = apiResults;
+   if ('statusCode' in careconnect) {
+      res.status(careconnect.statusCode).json(apiResults);
    } else {
       res.json(apiResults);
    }

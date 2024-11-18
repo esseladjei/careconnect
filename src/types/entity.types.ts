@@ -21,13 +21,11 @@ export interface UserType {
 
 export namespace TypeORMResponse {
    export interface RecordNotFound {
-      statusCode?: number | 404;
+      statusCode: number | 404;
       message: string;
       queryIdentifier?: string;
    }
    export interface Signature {
-      careconnect: RecordNotFound;
+      careconnect: RecordNotFound | UserType | InsertResult | UpdateResult | DeleteResult ;
    }
-
-   export type ApiResult = UserType | InsertResult | UpdateResult | DeleteResult | Signature;
 }
