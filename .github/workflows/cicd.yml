@@ -5,7 +5,7 @@ on:
       branches: [develop]
 
 jobs:
-   setup:
+   Setup_Integration:
       runs-on: ubuntu-latest
 
       steps:
@@ -24,43 +24,30 @@ jobs:
            run: |
               npm install
               echo "Install node packages completed"
-   lint:
-       runs-on: ubuntu-latest
-       needs: setup
 
-       steps:
-           - name: Run Linter
-             run: |
-              npm run lint
-              echo "No linting error reported"
-   test:
-      runs-on: ubuntu-latest
-      needs: lint
+         - name: Run Linter
+           run: |
+            npm run lint
+            echo "No linting error reported"
 
-      steps:
-      - name: Run Unit Test
-        run: |
-          npm run test:unit
-          echo "Unit test completed"
+         - name: Run Unit Test
+           run: | 
+              npm run test:unit
+              echo "Unit test completed"
 
-      - name: Run End-to-End Test
-        run: |
+         - name: Run End-to-End Test
+           run: |
             npm run test:e2e
             echo "End-to-End tests completed"
-
-   build:
-      runs-on: ubuntu-latest
-      needs: test
-      steps:
       
-      - name: Build Application
-        run: |
-         npm run build           
-         echo "Build step completed"
+         - name: Build Application
+           run: |
+            npm run build           
+            echo "Build step completed"
 
    deploy:
     runs-on: ubuntu-latest
-    needs: build  # Ensure deployment only happens after build
+    needs: Setup_Integration  # Ensure deployment only happens after build
     #Skip if no AWS credentials if: ${{ secrets.AWS_ACCESS_KEY_ID }}  
 
     steps:
