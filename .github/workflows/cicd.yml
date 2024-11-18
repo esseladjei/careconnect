@@ -61,7 +61,7 @@ jobs:
    deploy:
     runs-on: ubuntu-latest
     needs: build  # Ensure deployment only happens after build
-    if: ${{ secrets.AWS_ACCESS_KEY_ID != '' }}  # Skip if no AWS credentials
+    #Skip if no AWS credentials if: ${{ secrets.AWS_ACCESS_KEY_ID }}  
 
     steps:
     - name: Checkout code
