@@ -2,9 +2,8 @@ import { User } from '../entities/users.entity.ts';
 import { TypeORMResponse, UserType } from 'src/types/entity.types.ts';
 import { formatResponse, hashPassword } from './utils.ts';
 import { AppDataSource } from 'src/config/db.ts';
-import { UpdateResult } from 'typeorm';
-import { DeleteResult } from 'typeorm/browser';
-import { InsertResult } from 'typeorm/browser';
+import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
+
 export const AddUser = async (user: UserType): Promise<TypeORMResponse.Signature> => {
    try {
       if (!user) return formatResponse<TypeORMResponse.RecordNotFound>({ message: 'NotAcceptable: No user defined', statusCode: 406 });
