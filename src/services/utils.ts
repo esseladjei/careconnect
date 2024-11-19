@@ -19,7 +19,7 @@ export const formatResponse = <T>(message: T): { careconnect: T } => {
    };
 };
 
-export const sendResponse = <T extends TypeORMResponse.Signature>(res: Response<any, Record<string, any>>, apiResults: T) => {
+export const sendResponse = <T extends TypeORMResponse.Signature>(res: Response, apiResults: T) => {
    const { careconnect } = apiResults;
    if ('statusCode' in careconnect) {
       res.status(careconnect.statusCode).json(apiResults);

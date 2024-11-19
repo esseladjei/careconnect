@@ -1,11 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Biodata } from './biodata.entity.ts';
 import { Role } from 'src/types/entity.types.ts';
+import { Notification } from './notification.entity.ts';
 @Entity()
 export class User extends Biodata {
    @PrimaryGeneratedColumn('uuid')
    userid: string;
-  
+
    @Column({
       type: 'varchar',
    })

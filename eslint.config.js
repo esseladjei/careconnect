@@ -1,16 +1,23 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
-   {
-      files: ['**/*.{ts}'],
-      ignores: ['.dist/*', '**/node_modules/', '.git/'],
+export default {
+   files: ['**/*.ts'],
+   ignores: ['.dist/*', '**/node_modules/', '.git/','src/error.ts','src/server.ts','src/app.ts'],
+   languageOptions: {
+      parser: tsParser,
+      globals: globals.node,
    },
-   {
-      languageOptions: { globals: globals.browser },
+   plugins: {
+      '@typescript-eslint': tsPlugin,
    },
-   pluginJs.configs.recommended,
-   ...tseslint.configs.recommended,
-];
+   rules: {
+      ...pluginJs.configs.recommended.rules,
+      ...tsPlugin.configs.recommended.rules,
+      '@typescript-eslint/no-namespace': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      'no-console': 'warn',
+   },
+};

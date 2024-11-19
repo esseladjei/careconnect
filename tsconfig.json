@@ -27,7 +27,7 @@
       "noEmit": true,
       "emitDeclarationOnly": true,
       "declaration": true,
-      "baseUrl": "."
+      "baseUrl": ".",
    },
    "include": ["src/**/*.ts"],
    "exclude": ["node_modules", "dist"]

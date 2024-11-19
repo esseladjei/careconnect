@@ -12,7 +12,7 @@ export const AddUser = async (user: UserType): Promise<TypeORMResponse.Signature
       const userData = { ...user, password };
       const addedUser = await AppDataSource.createQueryBuilder().insert().into(User).values(userData).execute();
       return formatResponse<InsertResult>(addedUser);
-   } catch (error: any) {
+   } catch (error:any) {
       throw new Error(error);
    }
 };

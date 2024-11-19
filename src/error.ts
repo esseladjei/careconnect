@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 // Error-handling middleware
-const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (err: any, req: Request, res: Response) => {
    console.error('Error stack:', err.stack); // Log the full error for debugging
    // Set a generic status if none was set
    const statusCode = err.statusCode || 500;
