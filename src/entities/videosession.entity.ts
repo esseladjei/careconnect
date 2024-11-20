@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity } from 'typeorm';
-import { Doctor } from './doctor.entity.js';
+import { Practitioner } from './practitioner.entity.js';
 import { Patient } from './patient.entity.js';
 import { Timestamp } from 'typeorm/browser';
 
@@ -27,9 +27,9 @@ export class VideoSession extends BaseEntity {
    })
    end_time: Timestamp;
 
-   @OneToOne(() => Doctor)
+   @OneToOne(() => Practitioner)
    @JoinColumn()
-   doctor: Doctor;
+   Practitioner: Practitioner;
 
    @OneToOne(() => Patient)
    @JoinColumn()

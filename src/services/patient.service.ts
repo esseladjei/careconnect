@@ -1,5 +1,5 @@
 import { User } from '../entities/users.entity.js';
-import { TypeORMResponse} from 'src/types/entity.types.js';
+import { TypeORMResponse } from 'src/types/entity.types.js';
 import { formatResponse, hashPassword } from './utils.js';
 import { AppDataSource } from 'src/config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
@@ -16,8 +16,7 @@ export const AddUser = async (user: User): Promise<TypeORMResponse.Signature> =>
    }
 };
 export const getUserById = async (userId: string): Promise<TypeORMResponse.Signature> => {
-  try {
-      if (!userId) return formatResponse<TypeORMResponse.RecordNotFound>({ message: 'NotAcceptable: No UserId provided', statusCode: 406 });
+   try {
       const user = await User.findOneBy({ userid: userId });
       if (!user) {
          return formatResponse<TypeORMResponse.RecordNotFound>({

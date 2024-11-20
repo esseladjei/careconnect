@@ -22,7 +22,7 @@ describe('User service', () => {
          email: 'johndoe@example.com',
          password: 'password123',
          gender: 'male',
-         role: Role.DOCTOR,
+         role: Role.Practitioner,
       };
       const mockInsertResult: InsertResult = {
          identifiers: [{ id: 1 }],
@@ -58,7 +58,7 @@ describe('User service', () => {
             }),
          });
          const result = await AddUser(mockUser);
-        expect(hashPassword).toHaveBeenCalledWith(mockUser.password);
+         expect(hashPassword).toHaveBeenCalledWith(mockUser.password);
          expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({
             careconnect: mockInsertResult,

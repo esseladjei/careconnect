@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity, Decimal128 } from 'typeorm';
-import { Doctor } from './doctor.entity.js';
+import { Practitioner } from './practitioner.entity.js';
 import { Patient } from './patient.entity.js';
 
 @Entity()
@@ -27,9 +27,9 @@ export class BillingInvoice extends BaseEntity {
    })
    amount: Decimal128;
 
-   @OneToOne(() => Doctor)
+   @OneToOne(() => Practitioner)
    @JoinColumn()
-   doctor: Doctor;
+   Practitioner: Practitioner;
 
    @OneToOne(() => Patient)
    @JoinColumn()

@@ -1,18 +1,17 @@
-import { Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Appointment } from './appointment.entity.js';
-import { Biodata } from './biodata.entity.js';
-import { Doctor } from './doctor.entity.js';
+import { Practitioner } from './practitioner.entity.js';
 import { MedicalRecord } from './medicalrecord.entity.js';
 import { PatientHealthLogs } from './patienthealthlogs.entity.js';
 import { Payment } from './payment.entity.js';
 import { User } from './users.entity.js';
 @Entity()
-export class Patient extends Biodata {
+export class Patient extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   patientid!: number;
+   patientid: string;
 
    @OneToOne(() => User)
-   @JoinColumn()
+   @JoinColumn({ name: 'userid', referencedColumnName: 'userid' })
    user: User;
 
    @OneToMany(() => Appointment, (appointment) => appointment.patient)
@@ -21,9 +20,9 @@ export class Patient extends Biodata {
    @OneToMany(() => MedicalRecord, (record) => record.patient)
    medicalRecord: MedicalRecord[];
 
-   @ManyToMany(() => Doctor)
+   @ManyToMany(() => Practitioner)
    @JoinTable()
-   favoriteDoctors: Doctor[];
+   favoriteDoctors: Practitioner[];
 
    @OneToMany(() => Payment, (payment) => payment.patient)
    payments: Payment[];
