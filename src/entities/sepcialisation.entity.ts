@@ -1,16 +1,11 @@
-import {
-  Column,
-  Entity,
-  ManyToMany,
-  PrimaryGeneratedColumn
-} from 'typeorm';
-import { Biodata } from './biodata.entity.ts';
-import { Doctor } from './doctor.entity.ts';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Biodata } from './biodata.entity.js';
+import { Doctor } from './doctor.entity.js';
 
 @Entity()
 export class Specialisation extends Biodata {
    @PrimaryGeneratedColumn('uuid')
-  specilisationid!: number;
+   specilisationid!: number;
 
    @Column({
       type: 'varchar',

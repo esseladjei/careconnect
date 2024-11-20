@@ -1,11 +1,5 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   BaseEntity,
-   OneToMany,
-} from 'typeorm';
-import { Prescription } from './prescriptions.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from 'typeorm';
+import { Prescription } from './prescriptions.entity.js';
 @Entity()
 export class Pharmacy extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')

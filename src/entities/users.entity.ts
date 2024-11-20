@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Biodata } from './biodata.entity.ts';
-import { Role } from 'src/types/entity.types.ts';
-import { Notification } from './notification.entity.ts';
+import { Biodata } from './biodata.entity.js';
+import { Role } from 'src/types/entity.types.js';
+import { Notification } from './notification.entity.js';
 @Entity()
 export class User extends Biodata {
    @PrimaryGeneratedColumn('uuid')

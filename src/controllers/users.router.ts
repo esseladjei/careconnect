@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { AddUser, getUserById, updateUser, deleteUser } from 'src/services/user.service.ts';
-import { sendResponse } from 'src/services/utils.ts';
+import { AddUser, getUserById, updateUser, deleteUser } from 'src/services/user.service.js';
+import { sendResponse } from 'src/services/utils.js';
 const route = express.Router();
 
 route.post('/users', async (req: Request, res: Response, next: NextFunction) => {

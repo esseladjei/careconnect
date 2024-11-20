@@ -1,15 +1,13 @@
-import { AppDataSource } from 'src/config/db.js';
+import { AppDataSource } from '@/config/db.js';
 import { AddUser } from '@/services/user.service.js';
-import * as utils from 'src/services/utils.js';
-import { Role, UserType } from 'src/types/entity.types.js';
+import { hashPassword, formatResponse } from '@/services/utils.js';
+import { Role, UserType } from '@/types/entity.types.js';
 import { InsertResult } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
-/* vi.mock('src/services/utils.js', () => ({
-   hashPassword: vi.fn(),
-}));
- */
+vi.mock('@/services/utils.js');
+
 vi.mock('src/config/db.js', () => ({
    AppDataSource: {
       createQueryBuilder: vi.fn(),
@@ -36,13 +34,20 @@ describe('User service', () => {
          vi.clearAllMocks();
       });
       it('should return a 406 response if user is not provided', async () => {
+         vi.mocked(formatResponse).mockResolvedValue({
+            careconnect: { message: 'NotAcceptable: No user defined', statusCode: 406 },
+         });
          const result = await AddUser(null);
+         expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({
             careconnect: { message: 'NotAcceptable: No user defined', statusCode: 406 },
          });
       });
 
       it('should return the inserted user data if user is added successfully', async () => {
+         vi.mocked(formatResponse).mockResolvedValue({
+            careconnect: mockInsertResult,
+         });
          (AppDataSource.createQueryBuilder as any).mockReturnValue({
             insert: () => ({
                into: () => ({
@@ -52,9 +57,9 @@ describe('User service', () => {
                }),
             }),
          });
-         const spy = vi.spyOn(utils, 'hashPassword').mockResolvedValue('hashedPassword');
          const result = await AddUser(mockUser);
-         //expect(spy).toHaveBeenCalledWith(mockUser.password);NOT WORKING AS EXPECTED EVENTHOUGH THE FUNCTION IS CALLED
+        expect(hashPassword).toHaveBeenCalledWith(mockUser.password);
+         expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({
             careconnect: mockInsertResult,
          });

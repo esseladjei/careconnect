@@ -1,12 +1,5 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   BaseEntity,
-   Decimal128,
-   ManyToOne,
-} from 'typeorm';
-import { Doctor } from './doctor.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Decimal128, ManyToOne } from 'typeorm';
+import { Doctor } from './doctor.entity.js';
 
 @Entity()
 export class DoctorFees extends BaseEntity {

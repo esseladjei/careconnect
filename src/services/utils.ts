@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
-import { TypeORMResponse } from 'src/types/entity.types.ts';
+import { TypeORMResponse } from 'src/types/entity.types.js';
 
 export const hashPassword = async (password: string): Promise<string> => {
    const salt = await bcrypt.genSalt();

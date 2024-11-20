@@ -1,11 +1,5 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   ManyToOne,
-   BaseEntity,
-} from 'typeorm';
-import { Doctor } from './doctor.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity } from 'typeorm';
+import { Doctor } from './doctor.entity.js';
 
 @Entity()
 export class Rating extends BaseEntity {

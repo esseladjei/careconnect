@@ -9,5 +9,6 @@ export default defineConfig({
       coverage: {
          reporter: ['text', 'json', 'html'],
       },
+      //vitest uses default tsconfig which includes all src files for unit testing
    },
 });

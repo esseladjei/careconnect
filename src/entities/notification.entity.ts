@@ -1,12 +1,5 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   ManyToOne,
-   BaseEntity,
-   Timestamp,
-} from 'typeorm';
-import { User } from './users.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, Timestamp } from 'typeorm';
+import { User } from './users.entity.js';
 
 @Entity()
 export class Notification extends BaseEntity {

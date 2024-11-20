@@ -1,17 +1,8 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   BaseEntity,
-   ManyToOne,
-   Timestamp,
-   OneToOne,
-   JoinColumn,
-} from 'typeorm';
-import { Patient } from './patient.entity.ts';
-import { Doctor } from './doctor.entity.ts';
-import { MedicalRecord } from './medicalrecord.entity.ts';
-import { VideoSession } from './videosession.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, Timestamp, OneToOne, JoinColumn } from 'typeorm';
+import { Patient } from './patient.entity.js';
+import { Doctor } from './doctor.entity.js';
+import { MedicalRecord } from './medicalrecord.entity.js';
+import { VideoSession } from './videosession.entity.js';
 @Entity()
 export class Appointment extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')

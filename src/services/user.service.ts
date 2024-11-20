@@ -1,7 +1,7 @@
-import { User } from '../entities/users.entity.ts';
-import { TypeORMResponse, UserType } from 'src/types/entity.types.ts';
-import { formatResponse, hashPassword } from './utils.ts';
-import { AppDataSource } from 'src/config/db.ts';
+import { User } from '../entities/users.entity.js';
+import { TypeORMResponse, UserType } from 'src/types/entity.types.js';
+import { formatResponse, hashPassword } from './utils.js';
+import { AppDataSource } from 'src/config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
 
 export const AddUser = async (user: UserType): Promise<TypeORMResponse.Signature> => {
@@ -11,7 +11,7 @@ export const AddUser = async (user: UserType): Promise<TypeORMResponse.Signature
       const userData = { ...user, password };
       const addedUser = await AppDataSource.createQueryBuilder().insert().into(User).values(userData).execute();
       return formatResponse<InsertResult>(addedUser);
-   } catch (error:any) {
+   } catch (error: any) {
       throw new Error(error);
    }
 };
