@@ -1,12 +1,6 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn
-} from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Patient } from './patient.entity.ts';
+import { Patient } from './patient.entity.js';
 
 @Entity()
 export class PatientHealthLogs extends BaseEntity {

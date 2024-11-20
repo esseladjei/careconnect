@@ -1,14 +1,6 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   OneToOne,
-   JoinColumn,
-   BaseEntity,
-   Decimal128,
-} from 'typeorm';
-import { Doctor } from './doctor.entity.ts';
-import { Patient } from './patient.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity, Decimal128 } from 'typeorm';
+import { Doctor } from './doctor.entity.js';
+import { Patient } from './patient.entity.js';
 
 @Entity()
 export class BillingInvoice extends BaseEntity {

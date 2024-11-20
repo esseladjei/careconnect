@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne, BaseEntity } from 'typeorm';
-import { Doctor } from './doctor.entity.ts';
+import { Doctor } from './doctor.entity.js';
 @Entity()
 export class Referral extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')

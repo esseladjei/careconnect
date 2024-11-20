@@ -1,19 +1,11 @@
-import {
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Appointment } from './appointment.entity.ts';
-import { Biodata } from './biodata.entity.ts';
-import { Doctor } from './doctor.entity.ts';
-import { MedicalRecord } from './medicalrecord.entity.ts';
-import { PatientHealthLogs } from './patienthealthlogs.entity.ts';
-import { Payment } from './payment.entity.ts';
-import { User } from './users.entity.ts';
+import { Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Appointment } from './appointment.entity.js';
+import { Biodata } from './biodata.entity.js';
+import { Doctor } from './doctor.entity.js';
+import { MedicalRecord } from './medicalrecord.entity.js';
+import { PatientHealthLogs } from './patienthealthlogs.entity.js';
+import { Payment } from './payment.entity.js';
+import { User } from './users.entity.js';
 @Entity()
 export class Patient extends Biodata {
    @PrimaryGeneratedColumn('uuid')

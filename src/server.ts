@@ -1,6 +1,5 @@
-import app from './app.ts';
-import { AppDataSource } from './config/db.ts';
-
+import app from './app.js';
+import { AppDataSource } from './config/db.js';
 
 const startServer = () => {
    return new Promise<string>((resolve, reject) => {

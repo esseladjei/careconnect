@@ -1,14 +1,6 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   BaseEntity,
-   ManyToOne,
-   OneToOne,
-   Decimal128,
-} from 'typeorm';
-import { Patient } from './patient.entity.ts';
-import { Appointment } from './appointment.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToOne, Decimal128 } from 'typeorm';
+import { Patient } from './patient.entity.js';
+import { Appointment } from './appointment.entity.js';
 const enum PaymentStatus {
    PENDING = 'pending',
    PAID = 'paid',

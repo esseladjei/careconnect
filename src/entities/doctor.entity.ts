@@ -1,21 +1,13 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   OneToOne,
-   JoinColumn,
-   Column,
-   OneToMany,
-   ManyToMany,
-} from 'typeorm';
-import { Biodata } from './biodata.entity.ts';
-import { User } from './users.entity.ts';
-import { Appointment } from './appointment.entity.ts';
-import { MedicalRecord } from './medicalrecord.entity.ts';
-import { Patient } from './patient.entity.ts';
-import { Payment } from './payment.entity.ts';
-import { DoctorFees } from './doctorfees.entity.ts';
-import { Referral } from './referrals.entity.ts';
-import { Rating } from './rating.entity.ts';
+import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, Column, OneToMany, ManyToMany } from 'typeorm';
+import { Biodata } from './biodata.entity.js';
+import { User } from './users.entity.js';
+import { Appointment } from './appointment.entity.js';
+import { MedicalRecord } from './medicalrecord.entity.js';
+import { Patient } from './patient.entity.js';
+import { Payment } from './payment.entity.js';
+import { DoctorFees } from './doctorfees.entity.js';
+import { Referral } from './referrals.entity.js';
+import { Rating } from './rating.entity.js';
 
 @Entity()
 export class Doctor extends Biodata {
