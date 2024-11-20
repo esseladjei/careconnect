@@ -1,11 +1,13 @@
 import * as util from '@/services/utils.js';
 import { Response } from 'express';
 import { TypeORMResponse } from '@/types/entity.types.js';
+import { describe, expect, it, vi } from 'vitest';
+
 vi.mock('express');
 describe('Util methods', () => {
    it('should hashpassword', async () => {
       const password = await util.hashPassword('password');
-      expect(password).not.be.null;
+      expect(password).not.toBeNull();
    });
    it('should verifyPassword', async () => {
       const hashPassword = await util.hashPassword('password');
