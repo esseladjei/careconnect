@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
 import { User } from '../entities/users.entity.js';
-import { Patient } from '../entities/patient.entity.js';
+import { Client } from '../entities/client.entity.js';
 import { Practitioner } from '../entities/practitioner.entity.js';
 import { PractitionerFees } from '../entities/practitionerfees.entity.js';
 import { Insurance } from '../entities/insurance.entity.js';
@@ -9,7 +9,7 @@ import { Appointment } from '../entities/appointment.entity.js';
 import { MedicalRecord } from '../entities/medicalrecord.entity.js';
 import { Prescription } from '../entities/prescriptions.entity.js';
 import { Pharmacy } from '../entities/pharmacy.entity.js';
-import { PatientHealthLogs } from '../entities/patienthealthlogs.entity.js';
+import { ClientHealthLogs } from '../entities/clienthealthlogs.entity.js';
 import { Notification } from '../entities/notification.entity.js';
 import { Rating } from '../entities/rating.entity.js';
 import { BillingInvoice } from '../entities/billinginvoices.entity.js';
@@ -28,7 +28,7 @@ export const AppDataSource = new DataSource({
    synchronize: true, // Disable in production
    entities: [
       User,
-      Patient,
+      Client,
       Practitioner,
       PractitionerFees,
       Insurance,
@@ -36,7 +36,7 @@ export const AppDataSource = new DataSource({
       MedicalRecord,
       Prescription,
       Pharmacy,
-      PatientHealthLogs,
+      ClientHealthLogs,
       Notification,
       Rating,
       BillingInvoice,

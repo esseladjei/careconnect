@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, Column, OneToMany
 import { User } from './users.entity.js';
 import { Appointment } from './appointment.entity.js';
 import { MedicalRecord } from './medicalrecord.entity.js';
-import { Patient } from './patient.entity.js';
+import { Client } from './client.entity.js';
 import { Payment } from './payment.entity.js';
 import { PractitionerFees } from './practitionerfees.entity.js';
 import { Referral } from './referrals.entity.js';
@@ -26,6 +26,9 @@ export class Practitioner extends BaseEntity {
    @Column({
       type: 'varchar',
    })
+   @Column({ type: 'text', nullable: true })
+   bio: string;
+
    experience: string;
 
    @CreateDateColumn({
@@ -48,10 +51,10 @@ export class Practitioner extends BaseEntity {
    @OneToMany(() => MedicalRecord, (record) => record.Practitioner)
    medicalRecord: MedicalRecord[];
 
-   @ManyToMany(() => Patient)
-   favoritedByPatients: Patient[];
+   @ManyToMany(() => Client)
+   favoritedByClients: Client[];
 
-   @OneToMany(() => Payment, (payment) => payment.patient)
+   @OneToMany(() => Payment, (payment) => payment.client)
    payments: Payment[];
 
    @OneToMany(() => PractitionerFees, (fee) => fee.Practitioner)

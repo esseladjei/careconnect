@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, BaseEntity, OneToMany } from 'typeorm';
-import { Patient } from './patient.entity.js';
+import { Client } from './client.entity.js';
 import { Practitioner } from './practitioner.entity.js';
 import { Appointment } from './appointment.entity.js';
 import { Prescription } from './prescriptions.entity.js';
@@ -25,8 +25,8 @@ export class MedicalRecord extends BaseEntity {
    @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.medicalRecord)
    Practitioner: Practitioner;
 
-   @ManyToOne(() => Patient, (patient) => patient.medicalRecord)
-   patient: Patient;
+   @ManyToOne(() => Client, (client) => client.medicalRecord)
+   client: Client;
 
    @OneToMany(() => Prescription, (prescription) => prescription.medicalRecord)
    prescriptions: Prescription[];

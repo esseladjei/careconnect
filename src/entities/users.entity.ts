@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BaseEntity, UpdateDateColumn, CreateDateColumn } from 'typeorm';
-import { Role } from 'src/types/entity.types.js';
 import { Notification } from './notification.entity.js';
 @Entity()
 export class User extends BaseEntity {
@@ -60,12 +59,8 @@ export class User extends BaseEntity {
    })
    password: string;
 
-   @Column({
-      type: 'enum',
-      enum: Role,
-      nullable: true,
-   })
-   role: Role;
+   @Column({ type: 'varchar', enum: ['Doctor', 'Nurse', 'Midwife', 'Therapist', 'Psycologist', 'Client', 'Surgeon'], default: 'Client' })
+   role: 'Doctor' | 'Nurse' | 'Midwife' | 'Therapist' | 'Client' | 'Psycologist' | 'Surgeon';
 
    @Column({
       type: 'varchar',
@@ -86,4 +81,3 @@ export class User extends BaseEntity {
    @OneToMany(() => User, (user) => user.notifications)
    notifications: Notification[];
 }
-

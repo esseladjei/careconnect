@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity, Decimal128 } from 'typeorm';
 import { Practitioner } from './practitioner.entity.js';
-import { Patient } from './patient.entity.js';
+import { Client } from './client.entity.js';
 
 @Entity()
 export class BillingInvoice extends BaseEntity {
@@ -31,7 +31,7 @@ export class BillingInvoice extends BaseEntity {
    @JoinColumn()
    Practitioner: Practitioner;
 
-   @OneToOne(() => Patient)
+   @OneToOne(() => Client)
    @JoinColumn()
-   patient: Patient;
+   client: Client;
 }

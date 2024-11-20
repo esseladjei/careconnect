@@ -1,9 +1,9 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Patient } from './patient.entity.js';
+import { Client } from './client.entity.js';
 
 @Entity()
-export class PatientHealthLogs extends BaseEntity {
+export class ClientHealthLogs extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
    logId!: number;
 
@@ -22,6 +22,6 @@ export class PatientHealthLogs extends BaseEntity {
    })
    notes: string;
 
-   @ManyToOne(() => Patient, (patient) => patient.healthLogs)
-   patient: Patient;
+   @ManyToOne(() => Client, (client) => client.healthLogs)
+   client: Client;
 }

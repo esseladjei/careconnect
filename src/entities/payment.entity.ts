@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToOne, Decimal128 } from 'typeorm';
-import { Patient } from './patient.entity.js';
+import { Client } from './client.entity.js';
 import { Appointment } from './appointment.entity.js';
 const enum PaymentStatus {
    PENDING = 'pending',
@@ -28,6 +28,6 @@ export class Payment extends BaseEntity {
    @OneToOne(() => Appointment)
    appointment: Appointment;
 
-   @ManyToOne(() => Patient, (patient) => patient.payments)
-   patient: Patient;
+   @ManyToOne(() => Client, (client) => client.payments)
+   client: Client;
 }

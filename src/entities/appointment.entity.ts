@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, Timestamp, OneToOne, JoinColumn } from 'typeorm';
-import { Patient } from './patient.entity.js';
+import { Client } from './client.entity.js';
 import { Practitioner } from './practitioner.entity.js';
 import { MedicalRecord } from './medicalrecord.entity.js';
 import { VideoSession } from './videosession.entity.js';
@@ -34,8 +34,8 @@ export class Appointment extends BaseEntity {
    })
    reason_for_visit: string;
 
-   @ManyToOne(() => Patient, (patient) => patient.appointments)
-   patient: Patient;
+   @ManyToOne(() => Client, (client) => client.appointments)
+   client: Client;
 
    @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.appointments)
    Practitioner: Practitioner;
