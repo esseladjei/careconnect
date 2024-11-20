@@ -7,6 +7,7 @@
       "dev": "nodemon --watch src --ext ts --exec 'npx tsx src/server.ts' ",
       "start": "node dist/server.js",
       "test:unit": "vitest run src/test/unit",
+      "test:watch": "vitest --watch src/test/unit",
       "test:ui": "vitest --ui",
       "test:e2e": "vitest run src/test/e2e",
       "coverage": "vitest run --coverage",
