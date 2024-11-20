@@ -10,7 +10,8 @@
       "test:ui": "vitest --ui",
       "test:e2e": "vitest run src/test/e2e",
       "coverage": "vitest run --coverage",
-      "lint": "eslint"
+      "lint": "eslint",
+      "generate": "npx prisma generate"
    },
    "type": "module",
    "keywords": [],
@@ -44,6 +45,7 @@
       "supertest": "^7.0.0",
       "tsx": "^4.19.2",
       "typescript-eslint": "^8.14.0",
+      "vite-tsconfig-paths": "^5.1.3",
       "vitest": "^2.1.5"
    }
 }

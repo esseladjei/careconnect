@@ -1,16 +1,16 @@
-import { AppDataSource } from 'src/config/db.ts';
-import { AddUser } from 'src/services/user.service.ts';
-import * as utils from 'src/services/utils.ts';
-import { Role, UserType } from 'src/types/entity.types.ts';
+import { AppDataSource } from 'src/config/db.js';
+import { AddUser } from '@/services/user.service.js';
+import * as utils from 'src/services/utils.js';
+import { Role, UserType } from 'src/types/entity.types.js';
 import { InsertResult } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
-/* vi.mock('src/services/utils.ts', () => ({
+/* vi.mock('src/services/utils.js', () => ({
    hashPassword: vi.fn(),
 }));
  */
-vi.mock('src/config/db.ts', () => ({
+vi.mock('src/config/db.js', () => ({
    AppDataSource: {
       createQueryBuilder: vi.fn(),
    },
