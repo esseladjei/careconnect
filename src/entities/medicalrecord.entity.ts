@@ -1,13 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, BaseEntity, OneToMany } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Appointment } from './appointment.entity.js';
 import { Client } from './client.entity.js';
 import { Practitioner } from './practitioner.entity.js';
-import { Appointment } from './appointment.entity.js';
 import { Prescription } from './prescriptions.entity.js';
 
 @Entity()
 export class MedicalRecord extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   medicalrecordsId!: number;
+   medicalrecordId: string;
 
    @Column({
       type: 'date',
@@ -20,14 +20,18 @@ export class MedicalRecord extends BaseEntity {
    notes: string;
 
    @OneToOne(() => Appointment)
+   @JoinColumn({ name: 'appointmentId' })
    appointment: Appointment;
 
-   @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.medicalRecord)
-   Practitioner: Practitioner;
+   @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.medicalRecords)
+   @JoinColumn({ name: 'practitionerId' })
+   practitioner: Practitioner;
 
-   @ManyToOne(() => Client, (client) => client.medicalRecord)
+   @ManyToOne(() => Client, (client) => client.medicalRecords)
+   @JoinColumn({ name: 'clientId' })
    client: Client;
 
-   @OneToMany(() => Prescription, (prescription) => prescription.medicalRecord)
+   @OneToMany(() => Prescription, (prescription) => prescription.medicalRecords)
+   @JoinColumn({ name: 'prescriptionId' })
    prescriptions: Prescription[];
 }

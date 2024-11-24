@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BaseEntity, UpdateDateColumn, CreateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Notification } from './notification.entity.js';
 @Entity()
 export class User extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   userid: string;
+   userId: string;
    @Column({
       type: 'varchar',
    })
@@ -79,5 +79,6 @@ export class User extends BaseEntity {
    updated_at: Date;
 
    @OneToMany(() => User, (user) => user.notifications)
+   @JoinColumn({ name: 'notificationId' })
    notifications: Notification[];
 }

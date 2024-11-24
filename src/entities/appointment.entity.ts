@@ -1,50 +1,50 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, Timestamp, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
 import { Client } from './client.entity.js';
 import { Practitioner } from './practitioner.entity.js';
 import { MedicalRecord } from './medicalrecord.entity.js';
 import { VideoSession } from './videosession.entity.js';
+import { User } from './users.entity.js';
 @Entity()
 export class Appointment extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   appointmentId!: number;
+   appointmentId: string;
+
+   @Column({
+      type: 'timestamp',
+   })
+   appointment_datetime: Date;
+
+   @Column({
+      type: 'int',
+      default: 1,
+   })
+   status: number;
 
    @Column({
       type: 'varchar',
    })
-   appointment_type: string;
-
-   @Column({
-      type: 'time',
-   })
-   appointment_time: Timestamp;
-
-   @Column({
-      type: 'date',
-   })
-   appointment_date: Date;
+   reason: string;
 
    @Column({
       type: 'varchar',
-      default: 'active',
+      nullable: true,
    })
-   status: string;
+   specialnote: string;
 
-   @Column({
-      type: 'varchar',
-   })
-   reason_for_visit: string;
-
-   @ManyToOne(() => Client, (client) => client.appointments)
+   @ManyToOne(() => User, (client) => client.userId)
+   @JoinColumn({ name: 'clientId' })
    client: Client;
 
-   @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.appointments)
-   Practitioner: Practitioner;
+   @ManyToOne(() => User, (Practitioner) => Practitioner.userId)
+   @JoinColumn({ name: 'practitionerId' })
+   practitioner: Practitioner;
 
    @OneToOne(() => MedicalRecord)
-   @JoinColumn()
+   @JoinColumn({ name: 'medicalrecordId', referencedColumnName: 'medicalrecordId' })
    medicalRecord: MedicalRecord;
 
    @OneToOne(() => VideoSession)
-   @JoinColumn()
-   videoSession: VideoSession;
+   @JoinColumn({ name: 'sessionId', referencedColumnName: 'sessionId' })
+   session: VideoSession;
+
 }

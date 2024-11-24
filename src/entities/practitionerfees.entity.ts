@@ -1,10 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Decimal128, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Decimal128, ManyToOne,JoinColumn } from 'typeorm';
 import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
 export class PractitionerFees extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   practitionerfeeid!: number;
+   practitionerfeeId: string;
 
    @Column({
       type: 'varchar',
@@ -22,5 +22,6 @@ export class PractitionerFees extends BaseEntity {
    fee: Decimal128;
 
    @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.fees)
+   @JoinColumn({ name: 'practitionerId' })
    Practitioner: Practitioner;
 }

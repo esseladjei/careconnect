@@ -4,7 +4,7 @@ import { AddUser, deleteUser, getUserById, updateUser } from '@/services/user.se
 import { formatResponse, hashPassword } from '@/services/utils.js';
 import { InsertResult } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { TypeORMResponse } from '@/types/entity.types.js';
+import { ApiResponse } from '@/types/entity.types.js';
 import { UpdateResult } from 'typeorm/browser';
 // Mock dependencies
 vi.mock('@/services/utils.js');
@@ -89,8 +89,8 @@ describe('User service', () => {
          othername: '',
       };
       const userId: string = 'userId1234';
-      const mockNoUserID: TypeORMResponse.RecordNotFound = { message: 'NotAcceptable: No UserId provided', statusCode: 406 };
-      const mockNoUserFound: TypeORMResponse.RecordNotFound = { message: `User with ID ${userId}  not found`, statusCode: 406 };
+      const mockNoUserID: ApiResponse.RecordNotFound = { message: 'NotAcceptable: No UserId provided', statusCode: 406 };
+      const mockNoUserFound: ApiResponse.RecordNotFound = { message: `User with ID ${userId}  not found`, statusCode: 406 };
 
       it('should return user when usedid is set', async () => {
          vi.mocked(formatResponse).mockResolvedValue({
@@ -151,8 +151,8 @@ describe('User service', () => {
    });
    describe('Update User', () => {
       const userId: string = 'userId1234';
-      const mockNoUserID: TypeORMResponse.RecordNotFound = { message: 'NotAcceptable: No UserId provided', statusCode: 406 };
-      const mockNoUserFound: TypeORMResponse.RecordNotFound = { message: `User with ID ${userId}  not found`, statusCode: 406 };
+      const mockNoUserID: ApiResponse.RecordNotFound = { message: 'NotAcceptable: No UserId provided', statusCode: 406 };
+      const mockNoUserFound: ApiResponse.RecordNotFound = { message: `User with ID ${userId}  not found`, statusCode: 406 };
       it('should update user data when usedid is set', async () => {
          const updateData = { othername: 'updatedname' };
          const updateResponse: UpdateResult = {
@@ -222,8 +222,8 @@ describe('User service', () => {
    });
    describe('Delete User', () => {
       const userId: string = 'userId1234';
-      const mockNoUserID: TypeORMResponse.RecordNotFound = { message: 'NotAcceptable: No UserId provided', statusCode: 406 };
-      const mockNoUserFound: TypeORMResponse.RecordNotFound = { message: `User with ID ${userId}  not found`, statusCode: 406 };
+      const mockNoUserID: ApiResponse.RecordNotFound = { message: 'NotAcceptable: No UserId provided', statusCode: 406 };
+      const mockNoUserFound: ApiResponse.RecordNotFound = { message: `User with ID ${userId}  not found`, statusCode: 406 };
       it('should delete user data when usedid is provided', async () => {
          const deleteResponse: UpdateResult = {
             generatedMaps: [],

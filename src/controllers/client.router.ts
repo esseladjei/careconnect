@@ -1,9 +1,10 @@
-import { AddClient, deleteClient, getClientById, updateClient } from '@/services/client.service.js';
+
+import { AddClient, DeleteClient, GetClientAppointmentsById, GetClientById, UpdateClient } from '@/services/client.service.js';
 import express, { Request, Response, NextFunction } from 'express';
 import { sendResponse } from 'src/services/utils.js';
 const route = express.Router();
 
-route.post('/practitioners', async (req: Request, res: Response, next: NextFunction) => {
+route.post('/clients', async (req: Request, res: Response, next: NextFunction) => {
    try {
       const apiResults = await AddClient(req.body);
       sendResponse(res, apiResults);
@@ -11,28 +12,37 @@ route.post('/practitioners', async (req: Request, res: Response, next: NextFunct
       next(error);
    }
 });
-route.get('/practitioners/:practitionerid', async (req: Request, res: Response, next: NextFunction) => {
+route.get('/clients/:clientid', async (req: Request, res: Response, next: NextFunction) => {
    try {
-      const { practitionerid } = req.params;
-      const apiResults = await getClientById(practitionerid);
+      const { clientid } = req.params;
+      const apiResults = await GetClientById(clientid);
       sendResponse(res, apiResults);
    } catch (error) {
       next(error);
    }
 });
-route.delete('/practitioners/:practitionerid', async (req: Request, res: Response, next: NextFunction) => {
+route.delete('/clients/:clientid', async (req: Request, res: Response, next: NextFunction) => {
    try {
-      const { practitionerid } = req.params;
-      const apiResults = await deleteClient(practitionerid);
+      const { clientid } = req.params;
+      const apiResults = await DeleteClient(clientid);
       sendResponse(res, apiResults);
    } catch (error) {
       next(error);
    }
 });
-route.put('/practitioners/:practitionerid', async (req: Request, res: Response, next: NextFunction) => {
+route.put('/clients/:clientid', async (req: Request, res: Response, next: NextFunction) => {
    try {
-      const { practitionerid } = req.params;
-      const apiResults = await updateClient(req.body, practitionerid);
+      const { clientid } = req.params;
+      const apiResults = await UpdateClient(req.body, clientid);
+      sendResponse(res, apiResults);
+   } catch (error) {
+      next(error);
+   }
+});
+route.get('/clientappointments/:clientid', async (req: Request, res: Response, next: NextFunction) => {
+   try {
+      const { clientid } = req.params;
+      const apiResults = await GetClientAppointmentsById(clientid);
       sendResponse(res, apiResults);
    } catch (error) {
       next(error);

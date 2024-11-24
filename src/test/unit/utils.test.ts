@@ -1,6 +1,6 @@
 import * as util from '@/services/utils.js';
 import { Response } from 'express';
-import { TypeORMResponse } from '@/types/entity.types.js';
+import { ApiResponse } from '@/types/entity.types.js';
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('express');
@@ -27,7 +27,7 @@ describe('Util methods', () => {
          return res as Response;
       };
       const res = mockResponse();
-      const apiResults: TypeORMResponse.Signature = {
+      const apiResults: ApiResponse.Signature = {
          careconnect: {
             statusCode: 404,
             message: 'Not Found',
@@ -45,7 +45,7 @@ describe('Util methods', () => {
          return res as Response;
       };
       const res = mockResponse();
-      const apiResults: TypeORMResponse.Signature = {
+      const apiResults: ApiResponse.Signature = {
          careconnect: {
             identifiers: [{ id: 1 }],
             generatedMaps: [],

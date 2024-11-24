@@ -1,21 +1,22 @@
-import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
-import { User } from '../entities/users.entity.js';
+import { DataSource } from 'typeorm';
+import { Appointment } from '../entities/appointment.entity.js';
+import { BillingInvoice } from '../entities/billinginvoices.entity.js';
 import { Client } from '../entities/client.entity.js';
+import { ClientHealthLogs } from '../entities/clienthealthlogs.entity.js';
+import { Insurance } from '../entities/insurance.entity.js';
+import { MedicalRecord } from '../entities/medicalrecord.entity.js';
+import { Notification } from '../entities/notification.entity.js';
+import { Payment } from '../entities/payment.entity.js';
+import { Pharmacy } from '../entities/pharmacy.entity.js';
 import { Practitioner } from '../entities/practitioner.entity.js';
 import { PractitionerFees } from '../entities/practitionerfees.entity.js';
-import { Insurance } from '../entities/insurance.entity.js';
-import { Appointment } from '../entities/appointment.entity.js';
-import { MedicalRecord } from '../entities/medicalrecord.entity.js';
 import { Prescription } from '../entities/prescriptions.entity.js';
-import { Pharmacy } from '../entities/pharmacy.entity.js';
-import { ClientHealthLogs } from '../entities/clienthealthlogs.entity.js';
-import { Notification } from '../entities/notification.entity.js';
 import { Rating } from '../entities/rating.entity.js';
-import { BillingInvoice } from '../entities/billinginvoices.entity.js';
-import { VideoSession } from '../entities/videosession.entity.js';
-import { Payment } from '../entities/payment.entity.js';
 import { Referral } from '../entities/referrals.entity.js';
+import { User } from '../entities/users.entity.js';
+import { VideoSession } from '../entities/videosession.entity.js';
+import { Specialisation } from '@/entities/sepcialisation.entity.js';
 dotenv.config();
 
 export const AppDataSource = new DataSource({
@@ -26,6 +27,7 @@ export const AppDataSource = new DataSource({
    password: process.env.POSTGRES_PASS,
    database: process.env.POSTGRES_DB,
    synchronize: true, // Disable in production
+   logging: process.env.NODE_ENV === 'developement'?  true : false,
    entities: [
       User,
       Client,
@@ -43,5 +45,6 @@ export const AppDataSource = new DataSource({
       VideoSession,
       Payment,
       Referral,
+      Specialisation,
    ],
 });
