@@ -1,21 +1,21 @@
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
 import { User } from '../entities/users.entity.js';
-import { Patient } from '../entities/patient.entity.js';
-import { Doctor } from 'src/entities/doctor.entity.js';
-import { DoctorFees } from 'src/entities/doctorfees.entity.js';
-import { Insurance } from 'src/entities/insurance.entity.js';
-import { Appointment } from 'src/entities/appointment.entity.js';
-import { MedicalRecord } from 'src/entities/medicalrecord.entity.js';
-import { Prescription } from 'src/entities/prescriptions.entity.js';
-import { Pharmacy } from 'src/entities/pharmacy.entity.js';
-import { PatientHealthLogs } from 'src/entities/patienthealthlogs.entity.js';
-import { Notification } from 'src/entities/notification.entity.js';
-import { Rating } from 'src/entities/rating.entity.js';
-import { BillingInvoice } from 'src/entities/billinginvoices.entity.js';
-import { VideoSession } from 'src/entities/videosession.entity.js';
-import { Payment } from 'src/entities/payment.entity.js';
-import { Referral } from 'src/entities/referrals.entity.js';
+import { Client } from '../entities/client.entity.js';
+import { Practitioner } from '../entities/practitioner.entity.js';
+import { PractitionerFees } from '../entities/practitionerfees.entity.js';
+import { Insurance } from '../entities/insurance.entity.js';
+import { Appointment } from '../entities/appointment.entity.js';
+import { MedicalRecord } from '../entities/medicalrecord.entity.js';
+import { Prescription } from '../entities/prescriptions.entity.js';
+import { Pharmacy } from '../entities/pharmacy.entity.js';
+import { ClientHealthLogs } from '../entities/clienthealthlogs.entity.js';
+import { Notification } from '../entities/notification.entity.js';
+import { Rating } from '../entities/rating.entity.js';
+import { BillingInvoice } from '../entities/billinginvoices.entity.js';
+import { VideoSession } from '../entities/videosession.entity.js';
+import { Payment } from '../entities/payment.entity.js';
+import { Referral } from '../entities/referrals.entity.js';
 dotenv.config();
 
 export const AppDataSource = new DataSource({
@@ -28,15 +28,15 @@ export const AppDataSource = new DataSource({
    synchronize: true, // Disable in production
    entities: [
       User,
-      Patient,
-      Doctor,
-      DoctorFees,
+      Client,
+      Practitioner,
+      PractitionerFees,
       Insurance,
       Appointment,
       MedicalRecord,
       Prescription,
       Pharmacy,
-      PatientHealthLogs,
+      ClientHealthLogs,
       Notification,
       Rating,
       BillingInvoice,

@@ -38,4 +38,5 @@ route.put('/users/:userid', async (req: Request, res: Response, next: NextFuncti
       next(error);
    }
 });
-export { route as UserRoute };
+const UserRoute = route;
+export default UserRoute;

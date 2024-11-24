@@ -1,23 +1,7 @@
 import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
-
-export enum Role {
-   DOCTOR = 'doctor',
-   PATIENT = 'patient',
-}
-export interface UserType {
-   firstname: string;
-   lastname: string;
-   othername: string;
-   email: string;
-   dateofbirth: Date;
-   gender: string;
-   isActive: string;
-   telephonenumber: string;
-   address: string;
-   profilePictureUrl: string;
-   role: Role;
-   password: string;
-}
+import { Practitioner } from '@/entities/practitioner.entity.js';
+import { User } from '@/entities/users.entity.js';
+import { Client } from '@/entities/client.entity.js';
 
 export namespace TypeORMResponse {
    export interface RecordNotFound {
@@ -26,6 +10,6 @@ export namespace TypeORMResponse {
       queryIdentifier?: string;
    }
    export interface Signature {
-      careconnect: RecordNotFound | UserType | InsertResult | UpdateResult | DeleteResult ;
+      careconnect: RecordNotFound | User | Client | InsertResult | UpdateResult | DeleteResult | Practitioner;
    }
 }

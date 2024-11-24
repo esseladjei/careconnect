@@ -1,9 +1,8 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Biodata } from './biodata.entity.js';
-import { Doctor } from './doctor.entity.js';
+import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
-export class Specialisation extends Biodata {
+export class Specialisation extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
    specilisationid!: number;
 
@@ -17,6 +16,6 @@ export class Specialisation extends Biodata {
    })
    years_of_experience: string;
 
-   @ManyToMany(() => Doctor)
-   doctors: Doctor[];
+   @ManyToMany(() => Practitioner)
+   doctors: Practitioner[];
 }
