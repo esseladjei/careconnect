@@ -1,9 +1,9 @@
 import { AppDataSource } from '@/config/db.js';
-import { AddClient } from '@/services/client.service.js';
+import { AddPractitioner } from '@/services/practitioner.service.js';
 import { formatResponse } from '@/services/utils.js';
 import { InsertResult } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { Client } from '@/entities/client.entity.js';
+import { Practitioner } from '@/entities/practitioner.entity.js';
 
 // Mock dependencies
 vi.mock('@/services/utils.js');
@@ -14,9 +14,9 @@ vi.mock('src/config/db.js', () => ({
    },
 }));
 
-describe('Client service', () => {
-   describe('AddClient', () => {
-      const mockUser: Client = {
+describe('Practitioner service', () => {
+   describe('AddPractitioner', () => {
+      const mockUser: Practitioner = {
          profession: 'Teacher',
          bio: 'A primary school teacher',
          userId: 'userid1234',
@@ -34,7 +34,7 @@ describe('Client service', () => {
          vi.mocked(formatResponse).mockResolvedValue({
             careconnect: { message: 'NotAcceptable: No user defined', statusCode: 406 },
          });
-         const result = await AddClient(null);
+         const result = await AddPractitioner(null);
          expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({
             careconnect: { message: 'NotAcceptable: No user defined', statusCode: 406 },
@@ -54,7 +54,7 @@ describe('Client service', () => {
                }),
             }),
          });
-         const result = await AddClient(mockUser);
+         const result = await AddPractitioner(mockUser);
          expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({
             careconnect: mockInsertResult,
@@ -73,7 +73,7 @@ describe('Client service', () => {
             }),
          });
 
-         await expect(AddClient(mockUser)).rejects.toThrow(errorMessage);
+         await expect(AddPractitioner(mockUser)).rejects.toThrow(errorMessage);
       });
    });
 });

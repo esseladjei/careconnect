@@ -1,10 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, Timestamp } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
 import { User } from './users.entity.js';
 
 @Entity()
 export class Notification extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   notificationId!: number;
+   notificationId: string;
 
    @Column({
       type: 'varchar',
@@ -27,5 +27,6 @@ export class Notification extends BaseEntity {
    status: string;
 
    @ManyToOne(() => User, (user) => user.notifications)
+   @JoinColumn({ name: 'userId' })
    user: User;
 }

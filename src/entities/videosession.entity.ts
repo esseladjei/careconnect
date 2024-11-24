@@ -6,7 +6,7 @@ import { Timestamp } from 'typeorm/browser';
 @Entity()
 export class VideoSession extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   sessionId!: number;
+   sessionId: string;
 
    @Column({
       type: 'varchar',
@@ -28,10 +28,10 @@ export class VideoSession extends BaseEntity {
    end_time: Timestamp;
 
    @OneToOne(() => Practitioner)
-   @JoinColumn()
+   @JoinColumn({ name: 'practitionerId' })
    Practitioner: Practitioner;
 
    @OneToOne(() => Client)
-   @JoinColumn()
+   @JoinColumn({ name: 'clientId' })
    client: Client;
 }

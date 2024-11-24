@@ -4,18 +4,19 @@ import { Practitioner } from './practitioner.entity.js';
 @Entity()
 export class Specialisation extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   specilisationid!: number;
+   specilisationId: string;
 
    @Column({
       type: 'varchar',
+      default: 'General Doctor', // e.g., Cardiology, Dermatology
    })
-   specialisation: string;
+   name: string;
 
    @Column({
       type: 'varchar',
    })
    years_of_experience: string;
 
-   @ManyToMany(() => Practitioner)
-   doctors: Practitioner[];
+   @ManyToMany(() => Practitioner, (practitioner) => practitioner.specialisations)
+   practitioners: Practitioner[];
 }

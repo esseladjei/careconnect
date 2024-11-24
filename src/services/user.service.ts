@@ -1,12 +1,13 @@
 import { User } from '../entities/users.entity.js';
-import { TypeORMResponse } from 'src/types/entity.types.js';
-import { formatResponse, hashPassword } from './utils.js';
+import { ApiResponse } from 'src/types/entity.types.js';
+import { formatResponse, hashPassword, validatedInputs } from './utils.js';
 import { AppDataSource } from 'src/config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
 
-export const AddUser = async (user: User): Promise<TypeORMResponse.Signature> => {
+export const AddUser = async (user: User): Promise<ApiResponse.Signature> => {
    try {
-      if (!user) return formatResponse<TypeORMResponse.RecordNotFound>({ message: 'NotAcceptable: No user defined', statusCode: 406 });
+      const validationResponse = validatedInputs([{ condition: !user, message: `NotAcceptable: No User Data provided.`, statusCode: 406 }]);
+      if (validationResponse) return validationResponse;
       const password = await hashPassword(user.password);
       const userData = { ...user, password };
       const addedUser = await AppDataSource.createQueryBuilder().insert().into(User).values(userData).execute();
@@ -15,12 +16,13 @@ export const AddUser = async (user: User): Promise<TypeORMResponse.Signature> =>
       throw new Error(error);
    }
 };
-export const getUserById = async (userId: string): Promise<TypeORMResponse.Signature> => {
+export const getUserById = async (userId: string): Promise<ApiResponse.Signature> => {
    try {
-      if (!userId) return formatResponse<TypeORMResponse.RecordNotFound>({ message: 'NotAcceptable: No UserId provided', statusCode: 406 });
+      const validationResponse = validatedInputs([{ condition: !userId, message: `NotAcceptable: No User ID provided.`, statusCode: 406 }]);
+      if (validationResponse) return validationResponse;
       const user = await AppDataSource.createQueryBuilder().select('U').from(User, 'U').where('U.userId = :id', { id: userId }).getOne();
       if (!user) {
-         return formatResponse<TypeORMResponse.RecordNotFound>({
+         return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: userId,
             message: `User with ID ${userId} not found`,
             statusCode: 404,
@@ -31,13 +33,13 @@ export const getUserById = async (userId: string): Promise<TypeORMResponse.Signa
       throw new Error(error);
    }
 };
-/* Late we will think about if we need all users*/
-export const deleteUser = async (userId: string): Promise<TypeORMResponse.Signature> => {
-  try {
-      if (!userId) return formatResponse<TypeORMResponse.RecordNotFound>({ message: 'NotAcceptable: No UserId provided', statusCode: 406 });
+export const deleteUser = async (userId: string): Promise<ApiResponse.Signature> => {
+   try {
+      const validationResponse = validatedInputs([{ condition: !userId, message: `NotAcceptable: No User ID provided.`, statusCode: 406 }]);
+      if (validationResponse) return validationResponse;
       const deletedResult = await AppDataSource.createQueryBuilder().delete().from(User).where('userid= :userid', { userid: userId }).execute();
       if (!deletedResult.affected) {
-         return formatResponse<TypeORMResponse.RecordNotFound>({
+         return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: userId,
             statusCode: 404,
             message: `No record was deleted for user: ${userId}`,
@@ -48,12 +50,16 @@ export const deleteUser = async (userId: string): Promise<TypeORMResponse.Signat
       throw new Error(error);
    }
 };
-export const updateUser = async (updateUserData: User, userId: string): Promise<TypeORMResponse.Signature> => {
-  try {
-      if (!userId) return formatResponse<TypeORMResponse.RecordNotFound>({ message: 'NotAcceptable: No UserId provided', statusCode: 406 });
+export const updateUser = async (updateUserData: User, userId: string): Promise<ApiResponse.Signature> => {
+   try {
+      const validationResponse = validatedInputs([
+         { condition: !userId, message: `NotAcceptable: No User ID provided.`, statusCode: 406 },
+         { condition: !updateUserData, message: `BadRequest: Update  data is required.`, statusCode: 400 },
+      ]);
+      if (validationResponse) return validationResponse;
       const updatedResults = await AppDataSource.createQueryBuilder().update(User).set(updateUserData).where('userid= :userid', { userid: userId }).execute();
       if (!updatedResults.affected) {
-         return formatResponse<TypeORMResponse.RecordNotFound>({
+         return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: userId,
             statusCode: 404,
             message: `No record was updated for user: ${userId}`,
