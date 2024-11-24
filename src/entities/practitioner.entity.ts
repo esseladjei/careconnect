@@ -46,7 +46,7 @@ export class Practitioner extends BaseEntity {
    @JoinColumn({ name: 'userId'})
    user: User;
 
-   @OneToMany(() => Appointment, (appointment) => appointment.practitionerAppointment)
+   @OneToMany(() => Appointment, (appointment) => appointment.practitioner)
    @JoinColumn({ name: 'appointmentId' })
    appointments: Appointment[];
 

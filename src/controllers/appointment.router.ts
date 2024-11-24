@@ -1,4 +1,4 @@
-import { AddAppointment, DeleteAppointment, GetAppointmentById, UpdateAppointment } from '@/services/appointment.service.js';
+import { AddAppointment, DeleteAppointment, UpdateAppointment } from '@/services/appointment.service.js';
 import express, { Request, Response, NextFunction } from 'express';
 import { sendResponse } from 'src/services/utils.js';
 const route = express.Router();
