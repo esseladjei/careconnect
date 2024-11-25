@@ -1,6 +1,6 @@
 import { AppDataSource } from '@/config/db.js';
 import { AddClient } from '@/services/client.service.js';
-import { formatResponse, validatedInputs } from '@/services/utils.js';
+import { formatResponse, validatedInputs, hashPassword } from '@/services/utils.js';
 import { InsertResult } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Client } from '@/entities/client.entity.js';
@@ -55,7 +55,8 @@ describe('Client service', () => {
             }),
          });
          const result = await AddClient(mockUser);
-         expect(validatedInputs).toHaveBeenCalled();
+        expect(validatedInputs).toHaveBeenCalled();
+              expect(hashPassword).toHaveBeenCalledWith(mockUser.password);
          expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({
             careconnect: mockInsertResult,

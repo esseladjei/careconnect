@@ -1,6 +1,5 @@
 import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { Practitioner } from '@/entities/practitioner.entity.js';
-import { User } from '@/entities/users.entity.js';
 import { Client } from '@/entities/client.entity.js';
 import { Appointment } from '@/entities/appointment.entity.js';
 
@@ -10,9 +9,9 @@ export namespace ApiResponse {
       message: string;
       queryIdentifier?: string;
    }
-   type CareConnectArray = Array< User | Client  | Practitioner | Appointment>;
+   type CareConnectArray = Array<  Client  | Practitioner | Appointment>;
    export interface Signature {
-      careconnect: RecordNotFound | User | Client | InsertResult | UpdateResult | DeleteResult | Practitioner | Appointment | CareConnectArray; // Referencing the array type
+      careconnect: RecordNotFound | Client | InsertResult | UpdateResult | DeleteResult | Practitioner | Appointment | CareConnectArray; // Referencing the array type
    }
 }
 

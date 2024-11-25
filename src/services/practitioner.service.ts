@@ -1,6 +1,6 @@
 import { Practitioner } from '../entities/practitioner.entity.js';
 import { ApiResponse } from 'src/types/entity.types.js';
-import { formatResponse, validatedInputs } from './utils.js';
+import { formatResponse, validatedInputs, hashPassword } from './utils.js';
 import { AppDataSource } from 'src/config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
 import { Appointment } from '@/entities/appointment.entity.js';
@@ -9,8 +9,10 @@ export const AddPractitioner = async (practitioner: Practitioner): Promise<ApiRe
    try {
       const validationResponse = validatedInputs([{ condition: !practitioner, message: `BadRequest: Practitioner data is required.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const addedPractitioner = await AppDataSource.createQueryBuilder().insert().into(Practitioner).values(practitioner).execute(); 
-     return formatResponse<InsertResult>(addedPractitioner);
+      const password = await hashPassword(practitioner.password);
+      const practitionerData = { ...practitioner, password };
+      const addedPractitioner = await AppDataSource.createQueryBuilder().insert().into(Practitioner).values(practitionerData).execute();
+      return formatResponse<InsertResult>(addedPractitioner);
    } catch (error: any) {
       throw new Error(error);
    }
@@ -74,7 +76,10 @@ export const GetPractitionerAppointmentsById = async (userId: string): Promise<A
    try {
       const validationResponse = validatedInputs([{ condition: !userId, message: `BadRequest: No Practitioner User ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const practitionerAppointments = await AppDataSource.createQueryBuilder(Appointment, 'A').innerJoinAndSelect('A.practitioner', 'practitioner').where('practitioner.userId = :id', { id: userId }).getMany();
+      const practitionerAppointments = await AppDataSource.createQueryBuilder(Appointment, 'A')
+         .innerJoinAndSelect('A.practitioner', 'practitioner')
+         .where('practitioner.userId = :id', { id: userId })
+         .getMany();
       if (!practitionerAppointments.length) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: userId,

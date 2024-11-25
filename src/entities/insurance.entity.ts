@@ -6,7 +6,8 @@ import {
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm';
-import { User } from './users.entity.js';
+import { Client } from './client.entity.js';
+
 @Entity()
 export class Insurance extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
@@ -32,7 +33,7 @@ export class Insurance extends BaseEntity {
    })
    contactinfo: string;
 
-   @OneToOne(() => User)
-   @JoinColumn({ name: 'userId' })
-   user: User;
+   @OneToOne(() => Client)
+   @JoinColumn({ name: 'clientId' })
+   client: Client;
 }

@@ -1,15 +1,74 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
 import { Appointment } from './appointment.entity.js';
 import { ClientHealthLogs } from './clienthealthlogs.entity.js';
 import { MedicalRecord } from './medicalrecord.entity.js';
 import { Payment } from './payment.entity.js';
 import { Practitioner } from './practitioner.entity.js';
-import { User } from './users.entity.js';
 @Entity()
 export class Client extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
    clientId: string;
 
+   @Column({
+      type: 'varchar',
+   })
+   firstname: string;
+
+   @Column({
+      type: 'varchar',
+   })
+   lastname: string;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   othername: string;
+
+   @Column({
+      type: 'varchar',
+   })
+   email: string;
+
+   @Column({
+      type: 'date',
+      nullable: true,
+   })
+   dateofbirth: Date;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   gender: string;
+
+   @Column({
+      type: 'varchar',
+      default: 'active',
+   })
+   isActive: string;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   telephonenumber: string;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   address: string;
+   @Column({
+      type: 'varchar',
+   })
+   password: string;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   profilePictureUrl: string;
    @Column({ type: 'text', nullable: true })
    profession: string;
 
@@ -26,13 +85,9 @@ export class Client extends BaseEntity {
    })
    updated_at: Timestamp;
 
-   @OneToOne(() => User)
-   @JoinColumn({ name: 'userId' })
-   user: User;
-
    @OneToMany(() => Appointment, (appointment) => appointment.client)
    appointments: Appointment[];
-  
+
    @OneToMany(() => MedicalRecord, (record) => record.client)
    @JoinColumn({ name: 'medicalRecordId' })
    medicalRecords: MedicalRecord[];

@@ -3,7 +3,6 @@ import { Client } from './client.entity.js';
 import { Practitioner } from './practitioner.entity.js';
 import { MedicalRecord } from './medicalrecord.entity.js';
 import { VideoSession } from './videosession.entity.js';
-import { User } from './users.entity.js';
 @Entity()
 export class Appointment extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
@@ -31,11 +30,11 @@ export class Appointment extends BaseEntity {
    })
    specialnote: string;
 
-   @ManyToOne(() => User, (client) => client.userId)
+   @ManyToOne(() => Client, (client) => client.clientId)
    @JoinColumn({ name: 'clientId' })
    client: Client;
 
-   @ManyToOne(() => User, (Practitioner) => Practitioner.userId)
+   @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.practitionerId)
    @JoinColumn({ name: 'practitionerId' })
    practitioner: Practitioner;
 
