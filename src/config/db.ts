@@ -16,6 +16,8 @@ import { Rating } from '../entities/rating.entity.js';
 import { Referral } from '../entities/referrals.entity.js';
 import { VideoSession } from '../entities/videosession.entity.js';
 import { Specialisation } from '@/entities/sepcialisation.entity.js';
+import { InsuranceProvider } from '@/entities/insuranceproviders.entity.js';
+
 dotenv.config();
 
 export const AppDataSource = new DataSource({
@@ -26,7 +28,7 @@ export const AppDataSource = new DataSource({
    password: process.env.POSTGRES_PASS,
    database: process.env.POSTGRES_DB,
    synchronize: true, // Disable in production
-   logging: process.env.NODE_ENV === 'developement'?  true : false,
+   logging: process.env.NODE_ENV === 'developement' ? true : false,
    entities: [
       Client,
       Practitioner,
@@ -44,5 +46,6 @@ export const AppDataSource = new DataSource({
       Payment,
       Referral,
       Specialisation,
+      InsuranceProvider,
    ],
 });

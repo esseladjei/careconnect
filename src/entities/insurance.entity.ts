@@ -7,16 +7,11 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 import { Client } from './client.entity.js';
-
+import {InsuranceProvider} from './insuranceproviders.entity.js'
 @Entity()
 export class Insurance extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
    insuranceId: string;
-
-   @Column({
-      type: 'varchar',
-   })
-   providername: string;
 
    @Column({
       type: 'varchar',
@@ -26,12 +21,16 @@ export class Insurance extends BaseEntity {
    @Column({
       type: 'varchar',
    })
-   coveragedetails: string;
+   coverage_details: string;
 
    @Column({
       type: 'varchar',
    })
-   contactinfo: string;
+   contact_info: string;
+
+   @OneToOne(() => InsuranceProvider)
+   @JoinColumn({ name: 'providerId' })
+   InsuranceProvider: InsuranceProvider;
 
    @OneToOne(() => Client)
    @JoinColumn({ name: 'clientId' })
