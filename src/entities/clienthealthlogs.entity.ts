@@ -1,11 +1,11 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Client } from './client.entity.js';
 
 @Entity()
 export class ClientHealthLogs extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   logId!: number;
+   logId: string;
 
    @Column({
       type: 'varchar',
@@ -23,5 +23,6 @@ export class ClientHealthLogs extends BaseEntity {
    notes: string;
 
    @ManyToOne(() => Client, (client) => client.healthLogs)
+   @JoinColumn({ name: 'clientId' })
    client: Client;
 }

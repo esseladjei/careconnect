@@ -5,7 +5,7 @@ import { Client } from './client.entity.js';
 @Entity()
 export class BillingInvoice extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   invoiceId!: number;
+   invoiceId: string;
 
    @Column({
       type: 'date',
@@ -28,10 +28,10 @@ export class BillingInvoice extends BaseEntity {
    amount: Decimal128;
 
    @OneToOne(() => Practitioner)
-   @JoinColumn()
+   @JoinColumn({ name: 'practitionerId', referencedColumnName: 'practitionerId' })
    Practitioner: Practitioner;
 
    @OneToOne(() => Client)
-   @JoinColumn()
+   @JoinColumn({ name: 'clientId', referencedColumnName: 'clientId' })
    client: Client;
 }

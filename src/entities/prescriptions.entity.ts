@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
 
 import { MedicalRecord } from './medicalrecord.entity.js';
 import { Pharmacy } from './pharmacy.entity.js';
@@ -6,7 +6,7 @@ import { Pharmacy } from './pharmacy.entity.js';
 @Entity()
 export class Prescription extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   prescriptionId!: number;
+   prescriptionId: string;
 
    @Column({
       type: 'varchar',
@@ -29,8 +29,10 @@ export class Prescription extends BaseEntity {
    duration: string;
 
    @ManyToOne(() => MedicalRecord, (record) => record.prescriptions)
-   medicalRecord: MedicalRecord;
+   @JoinColumn({ name: 'medicalRecordId' })
+   medicalRecords: MedicalRecord;
 
    @ManyToOne(() => Pharmacy, (pharmacy) => pharmacy.prescriptions)
+   @JoinColumn({ name: 'pharmacyId' })
    pharmacy: Pharmacy;
 }

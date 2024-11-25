@@ -1,4 +1,4 @@
-import { AddPractitioner, deletePractitioner, getPractitionerById, updatePractitioner } from '@/services/practitioner.service.js';
+import { AddPractitioner, deletePractitioner, GetPractitionerAppointmentsById, getPractitionerById, updatePractitioner } from '@/services/practitioner.service.js';
 import express, { Request, Response, NextFunction } from 'express';
 import { sendResponse } from 'src/services/utils.js';
 const route = express.Router();
@@ -33,6 +33,15 @@ route.put('/practitioners/:practitionerid', async (req: Request, res: Response, 
    try {
       const { practitionerid } = req.params;
       const apiResults = await updatePractitioner(req.body, practitionerid);
+      sendResponse(res, apiResults);
+   } catch (error) {
+      next(error);
+   }
+});
+route.get('/practitionerappointments/:practitionerid', async (req: Request, res: Response, next: NextFunction) => {
+   try {
+      const { practitionerid } = req.params;
+      const apiResults = await GetPractitionerAppointmentsById(practitionerid);
       sendResponse(res, apiResults);
    } catch (error) {
       next(error);
