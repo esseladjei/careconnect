@@ -1,13 +1,13 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn, JoinTable } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
 import { Appointment } from './appointment.entity.js';
 import { Client } from './client.entity.js';
 import { MedicalRecord } from './medicalrecord.entity.js';
+import { Notification } from './notification.entity.js';
 import { Payment } from './payment.entity.js';
 import { PractitionerFees } from './practitionerfees.entity.js';
 import { Rating } from './rating.entity.js';
 import { Referral } from './referrals.entity.js';
 import { Specialisation } from './sepcialisation.entity.js';
-import { Notification } from './notification.entity.js';
 
 @Entity()
 export class Practitioner extends BaseEntity {
