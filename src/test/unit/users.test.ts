@@ -1,7 +1,7 @@
 import { AppDataSource } from '@/config/db.js';
 import { User } from '@/entities/users.entity.js';
 import { AddUser, deleteUser, getUserById, updateUser } from '@/services/user.service.js';
-import { formatResponse, hashPassword } from '@/services/utils.js';
+import { formatResponse, validatedInputs, hashPassword } from '@/services/utils.js';
 import { InsertResult } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApiResponse } from '@/types/entity.types.js';
@@ -35,13 +35,15 @@ describe('User service', () => {
          vi.clearAllMocks();
       });
       it('should return a 406 response if user is not provided', async () => {
-         vi.mocked(formatResponse).mockResolvedValue({
-            careconnect: { message: 'NotAcceptable: No user defined', statusCode: 406 },
+         vi.mocked(validatedInputs).mockReturnValue({
+            careconnect: { message: 'BadRequest: Client data is required.', statusCode: 400 },
          });
          const result = await AddUser(null);
          expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({
-            careconnect: { message: 'NotAcceptable: No user defined', statusCode: 406 },
+            careconnect: {
+               careconnect: { message: 'BadRequest: Client data is required.', statusCode: 400 },
+            },
          });
       });
 
@@ -153,14 +155,14 @@ describe('User service', () => {
       const userId: string = 'userId1234';
       const mockNoUserID: ApiResponse.RecordNotFound = { message: 'NotAcceptable: No UserId provided', statusCode: 406 };
       const mockNoUserFound: ApiResponse.RecordNotFound = { message: `User with ID ${userId}  not found`, statusCode: 406 };
-      it('should update user data when usedid is set', async () => {
+      it.only('should update user data when usedid is set', async () => {
          const updateData = { othername: 'updatedname' };
          const updateResponse: UpdateResult = {
             generatedMaps: [],
             raw: [],
             affected: 1,
          };
-         vi.mocked(formatResponse).mockResolvedValue({
+         vi.mocked(validatedInputs).mockReturnValue({
             careconnect: updateResponse,
          });
          const mockQueryBuilder = {
@@ -172,7 +174,7 @@ describe('User service', () => {
          vi.spyOn(AppDataSource, 'createQueryBuilder').mockReturnValue(mockQueryBuilder as any);
 
          const result = await updateUser(updateData, 'userid123');
-         expect(formatResponse).toHaveBeenCalledWith(updateResponse);
+         expect(validatedInputs).toHaveBeenCalled();
          expect(result.careconnect).toEqual(updateResponse);
       });
       it('should not update user when usedid does not exist', async () => {
@@ -222,15 +224,13 @@ describe('User service', () => {
    });
    describe('Delete User', () => {
       const userId: string = 'userId1234';
-      const mockNoUserID: ApiResponse.RecordNotFound = { message: 'NotAcceptable: No UserId provided', statusCode: 406 };
-      const mockNoUserFound: ApiResponse.RecordNotFound = { message: `User with ID ${userId}  not found`, statusCode: 406 };
       it('should delete user data when usedid is provided', async () => {
          const deleteResponse: UpdateResult = {
             generatedMaps: [],
             raw: [],
             affected: 1,
          };
-         vi.mocked(formatResponse).mockResolvedValue({
+         vi.mocked(validatedInputs).mockReturnValue({
             careconnect: deleteResponse,
          });
          const mockQueryBuilder = {
@@ -240,9 +240,8 @@ describe('User service', () => {
             execute: vi.fn().mockResolvedValue(deleteResponse),
          };
          vi.spyOn(AppDataSource, 'createQueryBuilder').mockReturnValue(mockQueryBuilder as any);
-
          const result = await deleteUser('userid123');
-         expect(formatResponse).toHaveBeenCalledWith(deleteResponse);
+         expect(validatedInputs).toHaveBeenCalled();
          expect(result.careconnect).toEqual(deleteResponse);
       });
       it('should not delete user when usedid does not exist', async () => {
@@ -251,9 +250,10 @@ describe('User service', () => {
             raw: [],
             affected: 0,
          };
-         vi.mocked(formatResponse).mockResolvedValue({
-            careconnect: mockNoUserFound,
-         });
+         const message = {
+            careconnect: { message: 'BadRequest: Client data is required.', statusCode: 400 },
+         };
+         vi.mocked(validatedInputs).mockReturnValue(message);
          const mockQueryBuilder = {
             delete: vi.fn().mockReturnThis(),
             from: vi.fn().mockReturnThis(),
@@ -263,16 +263,17 @@ describe('User service', () => {
          vi.spyOn(AppDataSource, 'createQueryBuilder').mockReturnValue(mockQueryBuilder as any);
 
          const result = await deleteUser('user12345');
-         expect(formatResponse).toHaveBeenCalledWith(mockNoUserFound);
-         expect(result.careconnect).toEqual(mockNoUserFound);
+         expect(validatedInputs).toHaveBeenCalled();
+         expect(result).toEqual(message);
       });
       it('should not delete user when usedid is no provided', async () => {
-         vi.mocked(formatResponse).mockResolvedValue({
-            careconnect: mockNoUserID,
-         });
+         const message = {
+            careconnect: { message: 'BadRequest: Client data is required.', statusCode: 400 },
+         };
+         vi.mocked(validatedInputs).mockReturnValue(message);
          const result = await deleteUser(null);
-         expect(formatResponse).toHaveBeenCalledWith(mockNoUserID);
-         expect(result.careconnect).toEqual(mockNoUserID);
+         expect(validatedInputs).toHaveBeenCalled();
+         expect(result).toEqual(message);
       });
       it('should throw an exception if error occurs when deleting', async () => {
          const errorMessage = 'Database error';

@@ -13,7 +13,7 @@ export const verifyPassword = async (userpassword: string, storedPassword: strin
    return passwordMatched;
 };
 
-export const formatResponse = <T>(message: T | T[]): { careconnect: T | T[] } => {
+export const formatResponse = <T>(message: T): { careconnect: T } => {
    return {
       careconnect: message,
    };

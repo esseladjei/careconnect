@@ -6,7 +6,7 @@ import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
 
 export const AddUser = async (user: User): Promise<ApiResponse.Signature> => {
    try {
-      const validationResponse = validatedInputs([{ condition: !user, message: `NotAcceptable: No User Data provided.`, statusCode: 406 }]);
+      const validationResponse = validatedInputs([{ condition: !user, message: `BadRequest: No User Data provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
       const password = await hashPassword(user.password);
       const userData = { ...user, password };
@@ -18,7 +18,7 @@ export const AddUser = async (user: User): Promise<ApiResponse.Signature> => {
 };
 export const getUserById = async (userId: string): Promise<ApiResponse.Signature> => {
    try {
-      const validationResponse = validatedInputs([{ condition: !userId, message: `NotAcceptable: No User ID provided.`, statusCode: 406 }]);
+      const validationResponse = validatedInputs([{ condition: !userId, message: `BadRequest: No User ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
       const user = await AppDataSource.createQueryBuilder().select('U').from(User, 'U').where('U.userId = :id', { id: userId }).getOne();
       if (!user) {
@@ -35,7 +35,7 @@ export const getUserById = async (userId: string): Promise<ApiResponse.Signature
 };
 export const deleteUser = async (userId: string): Promise<ApiResponse.Signature> => {
    try {
-      const validationResponse = validatedInputs([{ condition: !userId, message: `NotAcceptable: No User ID provided.`, statusCode: 406 }]);
+      const validationResponse = validatedInputs([{ condition: !userId, message: `BadRequest: User ID  is required.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
       const deletedResult = await AppDataSource.createQueryBuilder().delete().from(User).where('userid= :userid', { userid: userId }).execute();
       if (!deletedResult.affected) {
@@ -53,7 +53,7 @@ export const deleteUser = async (userId: string): Promise<ApiResponse.Signature>
 export const updateUser = async (updateUserData: User, userId: string): Promise<ApiResponse.Signature> => {
    try {
       const validationResponse = validatedInputs([
-         { condition: !userId, message: `NotAcceptable: No User ID provided.`, statusCode: 406 },
+         { condition: !userId, message: `BadRequest: No User ID provided.`, statusCode: 400 },
          { condition: !updateUserData, message: `BadRequest: Update  data is required.`, statusCode: 400 },
       ]);
       if (validationResponse) return validationResponse;

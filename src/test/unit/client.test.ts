@@ -1,6 +1,6 @@
 import { AppDataSource } from '@/config/db.js';
 import { AddClient } from '@/services/client.service.js';
-import { formatResponse } from '@/services/utils.js';
+import { formatResponse, validatedInputs } from '@/services/utils.js';
 import { InsertResult } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Client } from '@/entities/client.entity.js';
@@ -18,8 +18,7 @@ describe('Client service', () => {
    describe('AddClient', () => {
       const mockUser: Client = {
          profession: 'Teacher',
-        bio: 'A primary school teacher',
-         
+         bio: 'A primary school teacher',
       };
       const mockInsertResult: InsertResult = {
          identifiers: [{ id: 1 }],
@@ -31,17 +30,18 @@ describe('Client service', () => {
          vi.clearAllMocks();
       });
       it('should return a 406 response if client is not provided', async () => {
-         vi.mocked(formatResponse).mockResolvedValue({
-            careconnect: { message: 'NotAcceptable: No client defined', statusCode: 406 },
+         vi.mocked(validatedInputs).mockReturnValue({
+            careconnect: { message: 'BadRequest: Client data is required.', statusCode: 400 },
          });
          const result = await AddClient(null);
-         expect(formatResponse).toHaveBeenCalled();
+         expect(validatedInputs).toHaveBeenCalled();
          expect(result).toEqual({
-            careconnect: { message: 'NotAcceptable: No client defined', statusCode: 406 },
+            careconnect: { message: 'BadRequest: Client data is required.', statusCode: 400 },
          });
       });
 
       it('should return the inserted client data if client is added successfully', async () => {
+         vi.mocked(validatedInputs).mockReturnValue(null);
          vi.mocked(formatResponse).mockResolvedValue({
             careconnect: mockInsertResult,
          });
@@ -55,6 +55,7 @@ describe('Client service', () => {
             }),
          });
          const result = await AddClient(mockUser);
+         expect(validatedInputs).toHaveBeenCalled();
          expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({
             careconnect: mockInsertResult,

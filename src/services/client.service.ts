@@ -47,7 +47,7 @@ export const GetClientAppointmentsById = async (userId: string): Promise<ApiResp
             statusCode: 404,
          });
       }
-      return formatResponse<Appointment>(clientAppointments);
+      return formatResponse<Appointment[]>(clientAppointments);
    } catch (error: any) {
       throw new Error(error);
    }

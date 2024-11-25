@@ -9,15 +9,15 @@ export const AddPractitioner = async (practitioner: Practitioner): Promise<ApiRe
    try {
       const validationResponse = validatedInputs([{ condition: !practitioner, message: `BadRequest: Practitioner data is required.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const addedPractitioner = await AppDataSource.createQueryBuilder().insert().into(Practitioner).values(practitioner).execute();
-      return formatResponse<InsertResult>(addedPractitioner);
+      const addedPractitioner = await AppDataSource.createQueryBuilder().insert().into(Practitioner).values(practitioner).execute(); 
+     return formatResponse<InsertResult>(addedPractitioner);
    } catch (error: any) {
       throw new Error(error);
    }
 };
 export const getPractitionerById = async (practitionerid: string): Promise<ApiResponse.Signature> => {
    try {
-      const validationResponse = validatedInputs([{ condition: !practitionerid, message: `NotAcceptable: No Practitioner ID provided.`, statusCode: 406 }]);
+      const validationResponse = validatedInputs([{ condition: !practitionerid, message: `BadRequest: No Practitioner ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
       const practitioner = await AppDataSource.createQueryBuilder().select('P').from(Practitioner, 'P').where('P.practitionerid = :id', { id: practitionerid }).getOne();
       if (!practitioner) {
@@ -35,7 +35,7 @@ export const getPractitionerById = async (practitionerid: string): Promise<ApiRe
 
 export const deletePractitioner = async (practitionerid: string): Promise<ApiResponse.Signature> => {
    try {
-      const validationResponse = validatedInputs([{ condition: !practitionerid, message: `NotAcceptable: No Practitioner ID provided.`, statusCode: 406 }]);
+      const validationResponse = validatedInputs([{ condition: !practitionerid, message: `BadRequest: No Practitioner ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
       const deletedResult = await AppDataSource.createQueryBuilder().delete().from(Practitioner).where('practitionerid= :id', { id: practitionerid }).execute();
       if (!deletedResult.affected) {
@@ -53,7 +53,7 @@ export const deletePractitioner = async (practitionerid: string): Promise<ApiRes
 export const updatePractitioner = async (updatePractitioner: Practitioner, practitionerid: string): Promise<ApiResponse.Signature> => {
    try {
       const validationResponse = validatedInputs([
-         { condition: !practitionerid, message: `NotAcceptable: No Practitioner ID provided.`, statusCode: 406 },
+         { condition: !practitionerid, message: `BadRequest: No Practitioner ID provided.`, statusCode: 400 },
          { condition: !updatePractitioner, message: `BadRequest: Update  data is required.`, statusCode: 400 },
       ]);
       if (validationResponse) return validationResponse;
@@ -72,7 +72,7 @@ export const updatePractitioner = async (updatePractitioner: Practitioner, pract
 };
 export const GetPractitionerAppointmentsById = async (userId: string): Promise<ApiResponse.Signature> => {
    try {
-      const validationResponse = validatedInputs([{ condition: !userId, message: `NotAcceptable: No Practitioner User ID provided.`, statusCode: 406 }]);
+      const validationResponse = validatedInputs([{ condition: !userId, message: `BadRequest: No Practitioner User ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
       const practitionerAppointments = await AppDataSource.createQueryBuilder(Appointment, 'A').innerJoinAndSelect('A.practitioner', 'practitioner').where('practitioner.userId = :id', { id: userId }).getMany();
       if (!practitionerAppointments.length) {
@@ -82,7 +82,7 @@ export const GetPractitionerAppointmentsById = async (userId: string): Promise<A
             statusCode: 404,
          });
       }
-      return formatResponse<Appointment>(practitionerAppointments);
+      return formatResponse<Appointment[]>(practitionerAppointments);
    } catch (error: any) {
       throw new Error(error);
    }

@@ -10,7 +10,7 @@ export namespace ApiResponse {
       message: string;
       queryIdentifier?: string;
    }
-   type CareConnectArray = Array<RecordNotFound | User | Client | InsertResult | UpdateResult | DeleteResult | Practitioner | Appointment>;
+   type CareConnectArray = Array< User | Client  | Practitioner | Appointment>;
    export interface Signature {
       careconnect: RecordNotFound | User | Client | InsertResult | UpdateResult | DeleteResult | Practitioner | Appointment | CareConnectArray; // Referencing the array type
    }
