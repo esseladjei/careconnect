@@ -43,10 +43,10 @@ export class Client extends BaseEntity {
    gender: string;
 
    @Column({
-      type: 'varchar',
-      default: 'active',
+      type: 'int',
+      default: 1,
    })
-   isActive: string;
+   isActive: number;
 
    @Column({
       type: 'varchar',
@@ -69,10 +69,11 @@ export class Client extends BaseEntity {
       nullable: true,
    })
    profilePictureUrl: string;
-   @Column({ type: 'text', nullable: true })
+  
+   @Column({  type: 'varchar', nullable: true })
    profession: string;
 
-   @Column({ type: 'text', nullable: true })
+   @Column({  type: 'varchar', nullable: true })
    bio: string;
 
    @CreateDateColumn({

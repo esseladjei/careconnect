@@ -40,7 +40,7 @@ export const GetClientAppointmentsById = async (userId: string): Promise<ApiResp
       const clientAppointments = await AppDataSource.createQueryBuilder(Appointment, 'A')
          .innerJoinAndSelect('A.client', 'client')
          .innerJoinAndSelect('A.practitioner', 'practitioner')
-         .where('client.userId = :id', { id: userId })
+         .where('client.clientId = :id', { id: userId })
          .getMany();
       if (!clientAppointments.length) {
          return formatResponse<ApiResponse.RecordNotFound>({

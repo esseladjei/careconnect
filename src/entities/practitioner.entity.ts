@@ -8,7 +8,7 @@ import { PractitionerFees } from './practitionerfees.entity.js';
 import { Rating } from './rating.entity.js';
 import { Referral } from './referrals.entity.js';
 import { Specialisation } from './sepcialisation.entity.js';
-
+import { ClientHealthLogs } from './clienthealthlogs.entity.js';
 @Entity()
 export class Practitioner extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
@@ -72,7 +72,11 @@ export class Practitioner extends BaseEntity {
       type: 'varchar',
    })
    password: string;
-
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   profession: string;
    @Column({
       type: 'varchar',
       nullable: true,
@@ -144,4 +148,7 @@ export class Practitioner extends BaseEntity {
    @OneToMany(() => Practitioner, (practitioner) => practitioner.notifications)
    @JoinColumn({ name: 'notificationId' })
    notifications: Notification[];
+
+   @OneToMany(() => ClientHealthLogs, (log) => log.practitioner)
+   healthLogs: ClientHealthLogs[];
 }
