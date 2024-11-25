@@ -7,6 +7,7 @@ import PractitionerRoute from './controllers/practitioner.router.js';
 import ClientRoute from './controllers/client.router.js';
 import AppointmentRoute from './controllers/appointment.router.js';
 import HealthLogRoute from './controllers/healthlog.router.js';
+import InsuranceRoute from './controllers/insurance.router.js'; 
 
 const app: Application = express();
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use('/api', PractitionerRoute);
 app.use('/api', ClientRoute);
 app.use('/api', AppointmentRoute);
 app.use('/api', HealthLogRoute);
+app.use('/api/', InsuranceRoute)
 
 app.get('/', (req: Request, res: Response) => {
    res.send('Welcome to CareConnect API');
