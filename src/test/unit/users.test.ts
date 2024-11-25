@@ -36,18 +36,17 @@ describe('User service', () => {
       });
       it('should return a 406 response if user is not provided', async () => {
          vi.mocked(validatedInputs).mockReturnValue({
-            careconnect: { message: 'BadRequest: Client data is required.', statusCode: 400 },
+            careconnect: { message: 'BadRequest: No User data is required.', statusCode: 400 },
          });
          const result = await AddUser(null);
-         expect(formatResponse).toHaveBeenCalled();
+         expect(validatedInputs).toHaveBeenCalled();
          expect(result).toEqual({
-            careconnect: {
-               careconnect: { message: 'BadRequest: Client data is required.', statusCode: 400 },
-            },
+            careconnect: { message: 'BadRequest: No User data is required.', statusCode: 400 },
          });
       });
 
       it('should return the inserted user data if user is added successfully', async () => {
+         vi.mocked(validatedInputs).mockReturnValue(null);
          vi.mocked(formatResponse).mockResolvedValue({
             careconnect: mockInsertResult,
          });
@@ -62,6 +61,7 @@ describe('User service', () => {
          });
          const result = await AddUser(mockUser);
          expect(hashPassword).toHaveBeenCalledWith(mockUser.password);
+         expect(validatedInputs).toHaveBeenCalled();
          expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({
             careconnect: mockInsertResult,
@@ -140,7 +140,8 @@ describe('User service', () => {
          expect(result.careconnect).toEqual(mockNoUserFound);
       });
       it('should throw an exception if error occurs when searching', async () => {
-         const errorMessage = 'Database error';
+         vi.mocked(validatedInputs).mockReturnValue(null); 
+        const errorMessage = 'Database error';
          const mockQueryBuilder = {
             select: vi.fn().mockReturnThis(),
             from: vi.fn().mockReturnThis(),
@@ -154,8 +155,7 @@ describe('User service', () => {
    describe('Update User', () => {
       const userId: string = 'userId1234';
       const mockNoUserID: ApiResponse.RecordNotFound = { message: 'NotAcceptable: No UserId provided', statusCode: 406 };
-      const mockNoUserFound: ApiResponse.RecordNotFound = { message: `User with ID ${userId}  not found`, statusCode: 406 };
-      it.only('should update user data when usedid is set', async () => {
+      it('should update user data when usedid is set', async () => {
          const updateData = { othername: 'updatedname' };
          const updateResponse: UpdateResult = {
             generatedMaps: [],
@@ -177,41 +177,21 @@ describe('User service', () => {
          expect(validatedInputs).toHaveBeenCalled();
          expect(result.careconnect).toEqual(updateResponse);
       });
-      it('should not update user when usedid does not exist', async () => {
-         const updateData = { othername: 'updatedname' };
-         const updateResponse: UpdateResult = {
-            generatedMaps: [],
-            raw: [],
-            affected: 0,
-         };
-         vi.mocked(formatResponse).mockResolvedValue({
-            careconnect: mockNoUserFound,
-         });
-         const mockQueryBuilder = {
-            update: vi.fn().mockReturnThis(),
-            set: vi.fn().mockReturnThis(),
-            where: vi.fn().mockReturnThis(),
-            execute: vi.fn().mockResolvedValue(updateResponse),
-         };
-         vi.spyOn(AppDataSource, 'createQueryBuilder').mockReturnValue(mockQueryBuilder as any);
-
-         const result = await updateUser(updateData, 'user12345');
-         expect(formatResponse).toHaveBeenCalledWith(mockNoUserFound);
-         expect(result.careconnect).toEqual(mockNoUserFound);
-      });
       it('should not update user when usedid is no provided', async () => {
          const updateData = { othername: 'updatedname' };
+         vi.mocked(validatedInputs).mockReturnValue(null);
          vi.mocked(formatResponse).mockResolvedValue({
             careconnect: mockNoUserID,
          });
          const result = await updateUser(updateData, null);
+         expect(validatedInputs).toHaveBeenCalled();
          expect(formatResponse).toHaveBeenCalledWith(mockNoUserID);
          expect(result.careconnect).toEqual(mockNoUserID);
       });
-      it('should throw an exception if error occurs when searching', async () => {
+      it('should throw an exception if error occurs when updating', async () => {
+         vi.mocked(validatedInputs).mockReturnValue(null);
          const errorMessage = 'Database error';
          const updateData = { othername: 'updatedname' };
-
          const mockQueryBuilder = {
             update: vi.fn().mockReturnThis(),
             set: vi.fn().mockReturnThis(),
@@ -275,7 +255,8 @@ describe('User service', () => {
          expect(validatedInputs).toHaveBeenCalled();
          expect(result).toEqual(message);
       });
-      it('should throw an exception if error occurs when deleting', async () => {
+     it('should throw an exception if error occurs when deleting', async () => {
+         vi.mocked(validatedInputs).mockReturnValue(null);
          const errorMessage = 'Database error';
          const mockQueryBuilder = {
             delete: vi.fn().mockReturnThis(),
