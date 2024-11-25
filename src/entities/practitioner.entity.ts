@@ -7,7 +7,7 @@ import { PractitionerFees } from './practitionerfees.entity.js';
 import { Rating } from './rating.entity.js';
 import { Referral } from './referrals.entity.js';
 import { Specialisation } from './sepcialisation.entity.js';
-import { User } from './users.entity.js';
+import { Notification } from './notification.entity.js';
 
 @Entity()
 export class Practitioner extends BaseEntity {
@@ -18,6 +18,66 @@ export class Practitioner extends BaseEntity {
       type: 'varchar',
    })
    title: string;
+   @Column({
+      type: 'varchar',
+   })
+   firstname: string;
+
+   @Column({
+      type: 'varchar',
+   })
+   lastname: string;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   othername: string;
+
+   @Column({
+      type: 'varchar',
+   })
+   email: string;
+
+   @Column({
+      type: 'date',
+      nullable: true,
+   })
+   dateofbirth: Date;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   gender: string;
+
+   @Column({
+      type: 'varchar',
+      default: 'active',
+   })
+   isActive: string;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   telephonenumber: string;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   address: string;
+   @Column({
+      type: 'varchar',
+   })
+   password: string;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
+   profilePictureUrl: string;
 
    @Column({
       type: 'varchar',
@@ -41,10 +101,6 @@ export class Practitioner extends BaseEntity {
       type: 'timestamp',
    })
    updated_at: Timestamp;
-
-   @OneToOne(() => User)
-   @JoinColumn({ name: 'userId'})
-   user: User;
 
    @OneToMany(() => Appointment, (appointment) => appointment.practitioner)
    @JoinColumn({ name: 'appointmentId' })
@@ -84,4 +140,8 @@ export class Practitioner extends BaseEntity {
    @ManyToMany(() => Client, (client) => client.favoritePractitioners)
    @JoinTable({ name: 'favoritePractitioner' })
    clients: Client[];
+
+   @OneToMany(() => Practitioner, (practitioner) => practitioner.notifications)
+   @JoinColumn({ name: 'notificationId' })
+   notifications: Notification[];
 }

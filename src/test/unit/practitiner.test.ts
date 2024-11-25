@@ -1,6 +1,6 @@
 import { AppDataSource } from '@/config/db.js';
 import { AddPractitioner } from '@/services/practitioner.service.js';
-import { formatResponse, validatedInputs } from '@/services/utils.js';
+import { formatResponse, validatedInputs, hashPassword } from '@/services/utils.js';
 import { InsertResult } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Practitioner } from '@/entities/practitioner.entity.js';
@@ -19,7 +19,8 @@ describe('Practitioner service', () => {
       const mockUser: Practitioner = {
          profession: 'Teacher',
          bio: 'A primary school teacher',
-         userId: 'userid1234',
+         email: 'johndoe@example.com',
+         password: 'password123',
       };
       const mockInsertResult: InsertResult = {
          identifiers: [{ id: 1 }],
@@ -56,6 +57,7 @@ describe('Practitioner service', () => {
             }),
          });
          const result = await AddPractitioner(mockUser);
+         expect(hashPassword).toHaveBeenCalledWith(mockUser.password);
          expect(validatedInputs).toHaveBeenCalled();
          expect(formatResponse).toHaveBeenCalled();
          expect(result).toEqual({ careconnect: mockInsertResult });

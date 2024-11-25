@@ -1,6 +1,6 @@
 import { Client } from '@/entities/client.entity.js';
 import { ApiResponse } from 'src/types/entity.types.js';
-import { formatResponse, validatedInputs } from './utils.js';
+import { formatResponse, validatedInputs, hashPassword } from './utils.js';
 import { AppDataSource } from 'src/config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
 import { Appointment } from '@/entities/appointment.entity.js';
@@ -8,7 +8,9 @@ export const AddClient = async (client: Client): Promise<ApiResponse.Signature> 
    try {
       const validationResponse = validatedInputs([{ condition: !client, message: `BadRequest: Client data is required.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const addedClient = await AppDataSource.createQueryBuilder().insert().into(Client).values(client).execute();
+      const password = await hashPassword(client.password);
+      const clientData = { ...client, password };
+      const addedClient = await AppDataSource.createQueryBuilder().insert().into(Client).values(clientData).execute();
       return formatResponse<InsertResult>(addedClient);
    } catch (error: any) {
       throw new Error(error);
@@ -16,7 +18,7 @@ export const AddClient = async (client: Client): Promise<ApiResponse.Signature> 
 };
 export const GetClientById = async (clientId: string): Promise<ApiResponse.Signature> => {
    try {
-      const validationResponse = validatedInputs([{ condition: !clientId, message: `NotAcceptable: No Client ID provided.`, statusCode: 406 }]);
+      const validationResponse = validatedInputs([{ condition: !clientId, message: `BadRequest: No Client ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
       const client = await AppDataSource.createQueryBuilder().select('C').from(Client, 'C').where('C.clientId = :id', { id: clientId }).getOne();
       if (!client) {
@@ -33,13 +35,13 @@ export const GetClientById = async (clientId: string): Promise<ApiResponse.Signa
 };
 export const GetClientAppointmentsById = async (userId: string): Promise<ApiResponse.Signature> => {
    try {
-      const validationResponse = validatedInputs([{ condition: !userId, message: `NotAcceptable: No Client User ID provided.`, statusCode: 406 }]);
+      const validationResponse = validatedInputs([{ condition: !userId, message: `BadRequest: No Client User ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-     const clientAppointments = await AppDataSource.createQueryBuilder(Appointment, 'A')
-        .innerJoinAndSelect('A.client', 'client')
-        .innerJoinAndSelect('A.practitioner', 'practitioner')
-        .where('client.userId = :id', { id: userId })
-        .getMany();
+      const clientAppointments = await AppDataSource.createQueryBuilder(Appointment, 'A')
+         .innerJoinAndSelect('A.client', 'client')
+         .innerJoinAndSelect('A.practitioner', 'practitioner')
+         .where('client.userId = :id', { id: userId })
+         .getMany();
       if (!clientAppointments.length) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: userId,

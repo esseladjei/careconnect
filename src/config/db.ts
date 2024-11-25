@@ -14,7 +14,6 @@ import { PractitionerFees } from '../entities/practitionerfees.entity.js';
 import { Prescription } from '../entities/prescriptions.entity.js';
 import { Rating } from '../entities/rating.entity.js';
 import { Referral } from '../entities/referrals.entity.js';
-import { User } from '../entities/users.entity.js';
 import { VideoSession } from '../entities/videosession.entity.js';
 import { Specialisation } from '@/entities/sepcialisation.entity.js';
 dotenv.config();
@@ -29,7 +28,6 @@ export const AppDataSource = new DataSource({
    synchronize: true, // Disable in production
    logging: process.env.NODE_ENV === 'developement'?  true : false,
    entities: [
-      User,
       Client,
       Practitioner,
       PractitionerFees,

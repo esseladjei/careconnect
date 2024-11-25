@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
-import { User } from './users.entity.js';
+import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
 export class Notification extends BaseEntity {
@@ -26,7 +26,7 @@ export class Notification extends BaseEntity {
    })
    status: string;
 
-   @ManyToOne(() => User, (user) => user.notifications)
-   @JoinColumn({ name: 'userId' })
-   user: User;
+   @ManyToOne(() => Practitioner, (practioner) => practioner.notifications)
+   @JoinColumn({ name: 'practitionerId' })
+   practioner: Practitioner;
 }
