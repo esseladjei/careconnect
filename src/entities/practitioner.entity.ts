@@ -72,7 +72,11 @@ export class Practitioner extends BaseEntity {
       type: 'varchar',
    })
    password: string;
-
+   @Column({
+     type: 'varchar',
+     nullable:true,
+   })
+   profession: string;
    @Column({
       type: 'varchar',
       nullable: true,

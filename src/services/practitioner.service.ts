@@ -18,10 +18,10 @@ export const AddPractitioner = async (practitioner: Practitioner): Promise<ApiRe
    }
 };
 export const getPractitionerById = async (practitionerid: string): Promise<ApiResponse.Signature> => {
-   try {
+  try {
       const validationResponse = validatedInputs([{ condition: !practitionerid, message: `BadRequest: No Practitioner ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const practitioner = await AppDataSource.createQueryBuilder().select('P').from(Practitioner, 'P').where('P.practitionerid = :id', { id: practitionerid }).getOne();
+      const practitioner = await AppDataSource.createQueryBuilder().select('P').from(Practitioner, 'P').where('P.practitionerId = :id', { id: practitionerid }).getOne();
       if (!practitioner) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: practitionerid,
@@ -39,7 +39,7 @@ export const deletePractitioner = async (practitionerid: string): Promise<ApiRes
    try {
       const validationResponse = validatedInputs([{ condition: !practitionerid, message: `BadRequest: No Practitioner ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const deletedResult = await AppDataSource.createQueryBuilder().delete().from(Practitioner).where('practitionerid= :id', { id: practitionerid }).execute();
+      const deletedResult = await AppDataSource.createQueryBuilder().delete().from(Practitioner).where('practitionerId= :id', { id: practitionerid }).execute();
       if (!deletedResult.affected) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: practitionerid,
@@ -59,7 +59,7 @@ export const updatePractitioner = async (updatePractitioner: Practitioner, pract
          { condition: !updatePractitioner, message: `BadRequest: Update  data is required.`, statusCode: 400 },
       ]);
       if (validationResponse) return validationResponse;
-      const updatedResults = await AppDataSource.createQueryBuilder().update(Practitioner).set(updatePractitioner).where('practitionerid= :id', { id: practitionerid }).execute();
+      const updatedResults = await AppDataSource.createQueryBuilder().update(Practitioner).set(updatePractitioner).where('practitionerId= :id', { id: practitionerid }).execute();
       if (!updatedResults.affected) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: practitionerid,
@@ -78,7 +78,8 @@ export const GetPractitionerAppointmentsById = async (userId: string): Promise<A
       if (validationResponse) return validationResponse;
       const practitionerAppointments = await AppDataSource.createQueryBuilder(Appointment, 'A')
          .innerJoinAndSelect('A.practitioner', 'practitioner')
-         .where('practitioner.userId = :id', { id: userId })
+         .innerJoinAndSelect('A.client', 'client')
+         .where('practitioner.practitionerId = :id', { id: userId })
          .getMany();
       if (!practitionerAppointments.length) {
          return formatResponse<ApiResponse.RecordNotFound>({
