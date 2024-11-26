@@ -32,7 +32,7 @@ export const GetProviderById = async (providerId: string): Promise<ApiResponse.S
    try {
       const validationResponse = validatedInputs([{ condition: !providerId, message: `BadRequest: No provider ID.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const provider = await AppDataSource.createQueryBuilder().select('I').from(Provider, 'I').where('I.providerid = :id', { id: providerId }).getOne();
+      const provider = await AppDataSource.createQueryBuilder().select('I').from(Provider, 'I').where('I.providerId = :id', { id: providerId }).getOne();
       if (!provider) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: providerId,
@@ -50,7 +50,7 @@ export const DeleteProvider = async (providerid: string): Promise<ApiResponse.Si
    try {
       const validationResponse = validatedInputs([{ condition: !providerid, message: `BadRequest: No Insurance Provider ID available.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const deletedResult = await AppDataSource.createQueryBuilder().delete().from(Provider).where('providerid= :id', { id: providerid }).execute();
+      const deletedResult = await AppDataSource.createQueryBuilder().delete().from(Provider).where('providerId= :id', { id: providerid }).execute();
       if (!deletedResult.affected) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: providerid,
@@ -70,7 +70,7 @@ export const UpdateProvider = async (updateProviderData: Provider, providerId: s
          { condition: !updateProviderData, message: `BadRequest: Update  data is required.`, statusCode: 400 },
       ]);
       if (validationResponse) return validationResponse;
-      const updatedResults = await AppDataSource.createQueryBuilder().update(Provider).set(updateProviderData).where('providerid= :id', { id: providerId }).execute();
+      const updatedResults = await AppDataSource.createQueryBuilder().update(Provider).set(updateProviderData).where('providerId= :id', { id: providerId }).execute();
       if (!updatedResults.affected) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: providerId,

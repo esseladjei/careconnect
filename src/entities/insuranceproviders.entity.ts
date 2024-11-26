@@ -13,5 +13,5 @@ export class InsuranceProvider extends BaseEntity {
      type: 'varchar',
      nullable: true,
    })
-   contactinfo: string;
+   contact_info: string;
 }

@@ -1,4 +1,3 @@
-
 import { AddClient, DeleteClient, GetClientAppointmentsById, GetClientById, UpdateClient } from '@/services/client.service.js';
 import express, { Request, Response, NextFunction } from 'express';
 import { sendResponse } from 'src/services/utils.js';
