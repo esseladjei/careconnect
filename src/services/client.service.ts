@@ -58,7 +58,7 @@ export const DeleteClient = async (clientId: string): Promise<ApiResponse.Signat
    try {
       const validationResponse = validatedInputs([{ condition: !clientId, message: `NotAcceptable: No Client ID provided.`, statusCode: 406 }]);
       if (validationResponse) return validationResponse;
-      const deletedResult = await AppDataSource.createQueryBuilder().delete().from(Client).where('clientid= :clientid', { clientid: clientId }).execute();
+      const deletedResult = await AppDataSource.createQueryBuilder().delete().from(Client).where('clientId= :clientid', { clientid: clientId }).execute();
       if (!deletedResult.affected) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: clientId,
@@ -78,7 +78,7 @@ export const UpdateClient = async (updateClientData: Client, clientid: string): 
          { condition: !updateClientData, message: `BadRequest: Update  data is required.`, statusCode: 400 },
       ]);
       if (validationResponse) return validationResponse;
-      const updatedResults = await AppDataSource.createQueryBuilder().update(Client).set(updateClientData).where('clientid= :clientid', { clientid: clientid }).execute();
+      const updatedResults = await AppDataSource.createQueryBuilder().update(Client).set(updateClientData).where('clientId= :clientid', { clientid: clientid }).execute();
       if (!updatedResults.affected) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: clientid,
