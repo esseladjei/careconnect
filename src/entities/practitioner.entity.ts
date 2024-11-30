@@ -16,6 +16,7 @@ export class Practitioner extends BaseEntity {
 
    @Column({
       type: 'varchar',
+      nullable: true,
    })
    title: string;
    @Column({
@@ -36,6 +37,7 @@ export class Practitioner extends BaseEntity {
 
    @Column({
       type: 'varchar',
+      unique: true,
    })
    email: string;
 
@@ -52,16 +54,16 @@ export class Practitioner extends BaseEntity {
    gender: string;
 
    @Column({
-      type: 'varchar',
-      default: 'active',
+      type: 'int',
+      default: 1,
    })
-   isActive: string;
+   isActive: number;
 
    @Column({
       type: 'varchar',
       nullable: true,
    })
-   telephonenumber: string;
+   phonenumber: string;
 
    @Column({
       type: 'varchar',
@@ -72,6 +74,17 @@ export class Practitioner extends BaseEntity {
       type: 'varchar',
    })
    password: string;
+   @Column({
+      type: 'int',
+      default: 1,
+   })
+   termsandconditions: string;
+   @Column({
+      type: 'int',
+      default: 0,
+   })
+   appUpdatesConsent: number;
+
    @Column({
       type: 'varchar',
       nullable: true,

@@ -27,6 +27,7 @@ export class Client extends BaseEntity {
 
    @Column({
       type: 'varchar',
+      unique: true,
    })
    email: string;
 
@@ -52,7 +53,7 @@ export class Client extends BaseEntity {
       type: 'varchar',
       nullable: true,
    })
-   telephonenumber: string;
+   phonenumber: string;
 
    @Column({
       type: 'varchar',
@@ -63,17 +64,26 @@ export class Client extends BaseEntity {
       type: 'varchar',
    })
    password: string;
-
+   @Column({
+      type: 'int',
+      default: 1,
+   })
+   termsandconditions: string;
+   @Column({
+      type: 'int',
+      default:0
+   })
+   appUpdatesConsent: number;
    @Column({
       type: 'varchar',
       nullable: true,
    })
    profilePictureUrl: string;
-  
-   @Column({  type: 'varchar', nullable: true })
+
+   @Column({ type: 'varchar', nullable: true })
    profession: string;
 
-   @Column({  type: 'varchar', nullable: true })
+   @Column({ type: 'varchar', nullable: true })
    bio: string;
 
    @CreateDateColumn({
