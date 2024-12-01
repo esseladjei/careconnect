@@ -1,7 +1,7 @@
-import { AddInsurance, DeleteInsurance, GetInsuranceById, UpdateInsurance } from '@/services/insurance.service.js';
+import { AddInsurance, DeleteInsurance, GetInsuranceById, UpdateInsurance } from '../services/insurance.service.js';
 import express, { Request, Response, NextFunction } from 'express';
-import { sendResponse } from 'src/services/utils.js';
-import { SearchParams } from 'src/types/entity.types.js';
+import { sendResponse } from '../services/utils.js';
+import { SearchParams } from '../types/entity.types.js';
 const route = express.Router();
 
 route.post('/insurances', async (req: Request, res: Response, next: NextFunction) => {

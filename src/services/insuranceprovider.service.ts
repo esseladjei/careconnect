@@ -1,8 +1,8 @@
-import { ApiResponse } from 'src/types/entity.types.js';
+import { ApiResponse } from '../types/entity.types.js';
 import { formatResponse, validatedInputs } from './utils.js';
-import { AppDataSource } from 'src/config/db.js';
+import { AppDataSource } from '../config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
-import { InsuranceProvider as Provider } from '@/entities/insuranceproviders.entity.js';
+import { InsuranceProvider as Provider } from '../entities/insuranceproviders.entity.js';
 export const AddProvider = async (provider: Provider): Promise<ApiResponse.Signature> => {
    try {
       const validationResponse = validatedInputs([{ condition: !provider, message: `BadRequest: Insurance provider data is required.`, statusCode: 400 }]);

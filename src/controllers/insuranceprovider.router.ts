@@ -1,6 +1,6 @@
-import { AddProvider, DeleteProvider, GetProviderById, UpdateProvider } from '@/services/insuranceprovider.service.js';
+import { AddProvider, DeleteProvider, GetProviderById, UpdateProvider } from '../services/insuranceprovider.service.js';
 import express, { Request, Response, NextFunction } from 'express';
-import { sendResponse } from 'src/services/utils.js';
+import { sendResponse } from '../services/utils.js';
 const route = express.Router();
 
 route.post('/providers', async (req: Request, res: Response, next: NextFunction) => {

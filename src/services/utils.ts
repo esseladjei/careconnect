@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
-import { ApiResponse, ValidationCondition } from 'src/types/entity.types.js';
+import { ApiResponse, ValidationCondition } from '../types/entity.types.js';
 
 export const hashPassword = async (password: string): Promise<string> => {
    const salt = await bcrypt.genSalt();

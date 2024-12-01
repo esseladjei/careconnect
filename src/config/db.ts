@@ -15,14 +15,14 @@ import { Prescription } from '../entities/prescriptions.entity.js';
 import { Rating } from '../entities/rating.entity.js';
 import { Referral } from '../entities/referrals.entity.js';
 import { VideoSession } from '../entities/videosession.entity.js';
-import { Specialisation } from '@/entities/sepcialisation.entity.js';
-import { InsuranceProvider } from '@/entities/insuranceproviders.entity.js';
+import { Specialisation } from '../entities/sepcialisation.entity.js';
+import { InsuranceProvider } from '../entities/insuranceproviders.entity.js';
 
 dotenv.config();
 
 export const AppDataSource = new DataSource({
    type: 'postgres',
-   host: process.env.POSTGRES_HOST,
+   host:  process.env.POSTGRES_HOST,
    port: Number(process.env.POSTGRES_PORT),
    username: process.env.POSTGRES_USER,
    password: process.env.POSTGRES_PASS,

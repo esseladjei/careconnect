@@ -1,6 +1,6 @@
-import * as util from '@/services/utils.js';
+import * as util from src/services/utils.js';
 import { Response } from 'express';
-import { ApiResponse } from '@/types/entity.types.js';
+import { ApiResponse } from src/types/entity.types.js';
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('express');

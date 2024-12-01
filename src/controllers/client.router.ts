@@ -1,6 +1,6 @@
-import { AddClient, DeleteClient, GetClientAppointmentsById, GetClientById, UpdateClient } from '@/services/client.service.js';
+import { AddClient, DeleteClient, GetClientAppointmentsById, GetClientById, UpdateClient } from '../services/client.service.js';
 import express, { Request, Response, NextFunction } from 'express';
-import { sendResponse } from 'src/services/utils.js';
+import { sendResponse } from '../services/utils.js';
 const route = express.Router();
 
 route.post('/clients', async (req: Request, res: Response, next: NextFunction) => {

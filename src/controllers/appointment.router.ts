@@ -1,6 +1,6 @@
-import { AddAppointment, DeleteAppointment, UpdateAppointment } from '@/services/appointment.service.js';
+import { AddAppointment, DeleteAppointment, UpdateAppointment } from '../services/appointment.service.js';
 import express, { Request, Response, NextFunction } from 'express';
-import { sendResponse } from 'src/services/utils.js';
+import { sendResponse } from '../services/utils.js';
 const route = express.Router();
 
 route.post('/appointments', async (req: Request, res: Response, next: NextFunction) => {

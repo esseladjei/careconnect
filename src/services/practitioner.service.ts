@@ -1,15 +1,15 @@
 import { Practitioner } from '../entities/practitioner.entity.js';
-import { ApiResponse } from 'src/types/entity.types.js';
+import { ApiResponse, PractitionerProps } from '../types/entity.types.js';
 import { formatResponse, validatedInputs, hashPassword } from './utils.js';
-import { AppDataSource } from 'src/config/db.js';
+import { AppDataSource } from '../config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
-import { Appointment } from '@/entities/appointment.entity.js';
+import { Appointment } from '../entities/appointment.entity.js';
 
-export const AddPractitioner = async (practitioner: Practitioner): Promise<ApiResponse.Signature> => {
+export const AddPractitioner = async (practitioner: PractitionerProps): Promise<ApiResponse.Signature> => {
    try {
       const validationResponse = validatedInputs([{ condition: !practitioner, message: `BadRequest: Practitioner data is required.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const password = await hashPassword(practitioner.password);
+      const password = practitioner?.password && (await hashPassword(practitioner.password));
       const practitionerData = { ...practitioner, password };
       const addedPractitioner = await AppDataSource.createQueryBuilder().insert().into(Practitioner).values(practitionerData).execute();
       return formatResponse<InsertResult>(addedPractitioner);
@@ -18,7 +18,7 @@ export const AddPractitioner = async (practitioner: Practitioner): Promise<ApiRe
    }
 };
 export const getPractitionerById = async (practitionerid: string): Promise<ApiResponse.Signature> => {
-  try {
+   try {
       const validationResponse = validatedInputs([{ condition: !practitionerid, message: `BadRequest: No Practitioner ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
       const practitioner = await AppDataSource.createQueryBuilder().select('P').from(Practitioner, 'P').where('P.practitionerId = :id', { id: practitionerid }).getOne();

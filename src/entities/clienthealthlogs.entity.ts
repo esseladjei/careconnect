@@ -20,7 +20,7 @@ export class ClientHealthLogs extends BaseEntity {
       type: 'varchar',
    })
    notes: string;
-
+  
    @ManyToOne(() => Practitioner, (practitioner) => practitioner.practitionerId)
    @JoinColumn({ name: 'practitionerId' })
    practitioner: Practitioner;

@@ -1,6 +1,6 @@
-import { AddPractitioner, deletePractitioner, GetPractitionerAppointmentsById, getPractitionerById, updatePractitioner } from '@/services/practitioner.service.js';
+import { AddPractitioner, deletePractitioner, GetPractitionerAppointmentsById, getPractitionerById, updatePractitioner } from '../services/practitioner.service.js';
 import express, { Request, Response, NextFunction } from 'express';
-import { sendResponse } from 'src/services/utils.js';
+import { sendResponse } from '../services/utils.js';
 const route = express.Router();
 
 route.post('/practitioners', async (req: Request, res: Response, next: NextFunction) => {

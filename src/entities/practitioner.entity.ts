@@ -98,15 +98,17 @@ export class Practitioner extends BaseEntity {
 
    @Column({
       type: 'varchar',
+      nullable: true,
    })
    department: string;
 
-   @Column({
-      type: 'varchar',
-   })
    @Column({ type: 'text', nullable: true })
    bio: string;
 
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
    experience: string;
 
    @CreateDateColumn({

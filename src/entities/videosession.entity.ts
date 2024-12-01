@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity } from 'typeorm';
 import { Practitioner } from './practitioner.entity.js';
 import { Client } from './client.entity.js';
-import { Timestamp } from 'typeorm/browser';
 
 @Entity()
 export class VideoSession extends BaseEntity {
@@ -20,12 +19,12 @@ export class VideoSession extends BaseEntity {
    @Column({
       type: 'timestamp',
    })
-   start_time: Timestamp;
+   start_time: Date;
 
    @Column({
       type: 'timestamp',
    })
-   end_time: Timestamp;
+   end_time: Date;
 
    @OneToOne(() => Practitioner)
    @JoinColumn({ name: 'practitionerId' })

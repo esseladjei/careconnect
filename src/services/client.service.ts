@@ -1,14 +1,14 @@
-import { Client } from '@/entities/client.entity.js';
-import { ApiResponse } from 'src/types/entity.types.js';
+import { Client } from '../entities/client.entity.js';
+import { ApiResponse, ClientProps } from '../types/entity.types.js';
 import { formatResponse, validatedInputs, hashPassword } from './utils.js';
-import { AppDataSource } from 'src/config/db.js';
+import { AppDataSource } from '../config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
-import { Appointment } from '@/entities/appointment.entity.js';
-export const AddClient = async (client: Client): Promise<ApiResponse.Signature> => {
+import { Appointment } from '../entities/appointment.entity.js';
+export const AddClient = async (client: ClientProps): Promise<ApiResponse.Signature> => {
    try {
       const validationResponse = validatedInputs([{ condition: !client, message: `BadRequest: Client data is required.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const password = await hashPassword(client.password);
+      const password = client?.password && (await hashPassword(client.password));
       const clientData = { ...client, password };
       const addedClient = await AppDataSource.createQueryBuilder().insert().into(Client).values(clientData).execute();
       return formatResponse<InsertResult>(addedClient);

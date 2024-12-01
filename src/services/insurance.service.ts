@@ -1,8 +1,8 @@
-import { ApiResponse, SearchParams } from 'src/types/entity.types.js';
+import { ApiResponse, SearchParams } from '../types/entity.types.js';
 import { formatResponse, validatedInputs } from './utils.js';
-import { AppDataSource } from 'src/config/db.js';
+import { AppDataSource } from '../config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
-import { Insurance } from '@/entities/insurance.entity.js';
+import { Insurance } from '../entities/insurance.entity.js';
 export const AddInsurance = async (clientInsurance: Insurance): Promise<ApiResponse.Signature> => {
    try {
       const validationResponse = validatedInputs([{ condition: !clientInsurance, message: `BadRequest: Client insurance data is required.`, statusCode: 400 }]);
@@ -13,7 +13,7 @@ export const AddInsurance = async (clientInsurance: Insurance): Promise<ApiRespo
       throw new Error(error);
    }
 };
-export const GetInsuranceById=  async (SearchParams: SearchParams ): Promise<ApiResponse.Signature> => {
+export const GetInsuranceById = async (SearchParams: SearchParams): Promise<ApiResponse.Signature> => {
    try {
       const validationResponse = validatedInputs([{ condition: !SearchParams.clientId || !SearchParams.insuranceId, message: `BadRequest: No Client/Insurance ID provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
