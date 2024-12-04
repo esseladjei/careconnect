@@ -1,10 +1,10 @@
-import { Client } from '../entities/client.entity.js';
-import { ApiResponse, ClientProps } from '../types/entity.types.js';
-import { formatResponse, validatedInputs, hashPassword } from './utils.js';
+import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { AppDataSource } from '../config/db.js';
-import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
 import { Appointment } from '../entities/appointment.entity.js';
-export const AddClient = async (client: ClientProps): Promise<ApiResponse.Signature> => {
+import { Client } from '../entities/client.entity.js';
+import { ApiResponse, ClientProps, ValidateSignature } from '../types/entity.types.js';
+import { formatResponse, hashPassword, validatedInputs } from './utils.js';
+export const AddClient = async (client: ClientProps): Promise<ApiResponse.SignatureInsert | ValidateSignature> => {
    try {
       const validationResponse = validatedInputs([{ condition: !client, message: `BadRequest: Client data is required.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;

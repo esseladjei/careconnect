@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Response } from 'express';
-import { ApiResponse, ValidationCondition } from '../types/entity.types.js';
+import { ValidationCondition } from '../types/entity.types.js';
 
 export const hashPassword = async (password: string): Promise<string> => {
    const salt = await bcrypt.genSalt();
@@ -19,7 +19,7 @@ export const formatResponse = <T>(message: T): { careconnect: T } => {
    };
 };
 
-export const sendResponse = <T extends ApiResponse.Signature>(res: Response, apiResults: T) => {
+export const sendResponse = <T extends { careconnect: any }>(res: Response, apiResults: T) => {
    const { careconnect } = apiResults;
    if ('statusCode' in careconnect) {
       res.status(careconnect.statusCode).json(apiResults);
@@ -28,7 +28,7 @@ export const sendResponse = <T extends ApiResponse.Signature>(res: Response, api
    }
 };
 
-export const validatedInputs = (conditions: ValidationCondition[]): ApiResponse.Signature | null => {
+export const validatedInputs = (conditions: ValidationCondition[]) => {
    for (const { condition, message, statusCode } of conditions) {
       if (condition) {
          return formatResponse({ message, statusCode });

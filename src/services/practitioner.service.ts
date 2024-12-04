@@ -1,11 +1,11 @@
 import { Practitioner } from '../entities/practitioner.entity.js';
-import { ApiResponse, PractitionerProps } from '../types/entity.types.js';
+import { ApiResponse, PractitionerProps, ValidateSignature } from 'src/types/entity.types.js';
 import { formatResponse, validatedInputs, hashPassword } from './utils.js';
-import { AppDataSource } from '../config/db.js';
+import { AppDataSource } from 'src/config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
-import { Appointment } from '../entities/appointment.entity.js';
+import { Appointment } from 'src/entities/appointment.entity.js';
 
-export const AddPractitioner = async (practitioner: PractitionerProps): Promise<ApiResponse.Signature> => {
+export const AddPractitioner = async (practitioner: PractitionerProps): Promise<ApiResponse.SignatureInsert | ValidateSignature> => {
    try {
       const validationResponse = validatedInputs([{ condition: !practitioner, message: `BadRequest: Practitioner data is required.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;

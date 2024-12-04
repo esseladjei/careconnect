@@ -10,20 +10,36 @@ export namespace ApiResponse {
       queryIdentifier?: string;
       token?: string;
    }
-   type CareConnectArray = Array<ClientProps | PractitionerProps | Appointment | ClientHealthLogs | InsuranceProvider>;
-
-   export interface Signature {
-      careconnect: RecordNotFound | ClientProps | InsertResult | UpdateResult | DeleteResult | PractitionerProps | Appointment | ClientHealthLogs | Insurance | InsuranceProvider | CareConnectArray; // Referencing the array type
+   export interface LoginResponse {
+      token: string;
+      role: string;
+      id: string;
    }
-
    export interface WrongPassword {
       statusCode: 406;
       message: string;
       email: string;
    }
+   type CareConnectArray = Array<ClientProps | PractitionerProps | Appointment | ClientHealthLogs | InsuranceProvider>;
+
+   export interface Signature {
+      careconnect: RecordNotFound | ClientProps | InsertResult | UpdateResult | DeleteResult | PractitionerProps | Appointment | ClientHealthLogs | Insurance | InsuranceProvider | CareConnectArray; // Referencing the array type
+   }
+   export interface SignatureInsert {
+      careconnect: InsertResult;
+   }
+   export interface SignatureUpdate extends RecordNotFound {
+      careconnect: UpdateResult;
+   }
+   export interface SignatureDelete extends RecordNotFound {
+      careconnect: DeleteResult;
+   }
+   export interface LoginSignUpResponseSignature {
+      careconnect: LoginResponse | RecordNotFound;
+   }
 }
 export interface ClientProps {
-   clientId?: string;
+   clientId: string;
    firstname: string;
    lastname: string;
    othername?: string;
@@ -37,11 +53,11 @@ export interface ClientProps {
    profilePictureUrl?: string;
    profession?: string;
    bio?: string;
-  token?: string;
-  accountOption?:string
+   token?: string;
+   accountOption?: string;
 }
 export interface PractitionerProps {
-   practitionerId?: string;
+   practitionerId: string;
    firstname: string;
    lastname: string;
    othername?: string;
@@ -60,6 +76,12 @@ export interface PractitionerProps {
 }
 export type SearchParams = { clientId: string; insuranceId?: never } | { insuranceId: string; clientId?: never };
 
+export interface ValidateSignature {
+   careconnect: {
+      message: string;
+      statusCode: number;
+   };
+}
 export interface ValidationCondition {
    condition: boolean;
    message: string;
@@ -70,10 +92,11 @@ export interface LoginData {
    email: string;
    password: string;
 }
-export type SignUpData = (ClientProps & { accountOption?: string }) | (PractitionerProps & { accountOption?: string });
 
-export interface SignUpResponse {
-   identifiers: Array<string>;
-   generatedMaps: Array<PractitionerProps> | Array<ClientProps>;
-   raw: [PractitionerProps] | [ClientProps];
+export interface TokenProp {
+   id: string;
+   role: string;
+   firstname: string;
+   lastname: string;
+   email: string;
 }
