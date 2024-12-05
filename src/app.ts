@@ -32,8 +32,8 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction): voi
    }
    if (process.env?.SESSION_SECRET) {
       jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
-         if (err) {
-            return res.status(403).json({ message: 'Forbidden' });
+        if (err) {
+            return res.status(403).json({ message: 'Forbidden:Session expired!' });
          }
          if (typeof decoded === 'object' && 'id' in decoded && 'role' in decoded) {
             const user = decoded as JwtPayloadCustom;
