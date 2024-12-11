@@ -4,6 +4,7 @@ import { formatResponse, validatedInputs, hashPassword } from './utils.js';
 import { AppDataSource } from 'src/config/db.js';
 import { UpdateResult, DeleteResult, InsertResult } from 'typeorm';
 import { Appointment } from 'src/entities/appointment.entity.js';
+import { FilteredPractitioners, Locations, PractitionerQuery } from '@/types/practitioner.types.js';
 
 export const AddPractitioner = async (practitioner: PractitionerProps): Promise<ApiResponse.SignatureInsert | ValidateSignature> => {
    try {
@@ -34,7 +35,6 @@ export const getPractitionerById = async (practitionerid: string): Promise<ApiRe
       throw new Error(error);
    }
 };
-
 export const deletePractitioner = async (practitionerid: string): Promise<ApiResponse.Signature> => {
    try {
       const validationResponse = validatedInputs([{ condition: !practitionerid, message: `BadRequest: No Practitioner ID provided.`, statusCode: 400 }]);
@@ -89,6 +89,95 @@ export const GetPractitionerAppointmentsById = async (userId: string): Promise<A
          });
       }
       return formatResponse<Appointment[]>(practitionerAppointments);
+   } catch (error: any) {
+      throw new Error(error);
+   }
+};
+export const GetPractitionerLocations = async (query: string): Promise<ApiResponse.PractitionerLocations> => {
+   try {
+      const validationResponse = validatedInputs([{ condition: !query, message: `BadRequest: No search query provided.`, statusCode: 400 }]);
+      if (validationResponse) return validationResponse;
+      const practitionerLocations = await AppDataSource.createQueryBuilder(Practitioner, 'P')
+         .select('P.location')
+         .distinctOn(['P.location'])
+         .orderBy({ 'P.location': 'ASC' })
+         .where('P.location Ilike :location', { location: `%${query}%` })
+         .getMany();
+      if (!practitionerLocations.length) {
+         return formatResponse<ApiResponse.RecordNotFound>({
+            queryIdentifier: query,
+            message: `No Practitioner found in this area/location`,
+            statusCode: 404,
+         });
+      }
+      return formatResponse<Locations[]>(practitionerLocations);
+   } catch (error: any) {
+      throw new Error(error);
+   }
+};
+export const GetPractitionersByFilters = async (query: PractitionerQuery): Promise<ApiResponse.PractitionerFilters> => {
+   try {
+      const { location, experience, specialisations, availability, appointment_type, page = 1, limit = 10 } = query;
+      const validationResponse = validatedInputs([{ condition: !query, message: `BadRequest: No search query provided.`, statusCode: 400 }]);
+      if (validationResponse) return validationResponse;
+      const queryBuilder = await AppDataSource.getRepository(Practitioner).createQueryBuilder('P').leftJoinAndSelect('P.specialisations', 'specialisation').where('1=1');
+      queryBuilder.andWhere('P.isActive= :active', { active: 1 });
+      if (location) {
+         queryBuilder.andWhere('P.location = :location', { location: location });
+      }
+      if (experience) {
+         queryBuilder.andWhere('P.year_of_experience >= :experience', { experience: Number(experience) });
+      }
+
+      if (availability) {
+         const avail: string[] = availability.split('-');
+         queryBuilder.andWhere('P.availability && :availability', { availability: avail });
+      }
+
+      if (appointment_type) {
+        const appType: string[] = appointment_type.split('-');
+         queryBuilder.andWhere('P.appointment_type && :appointment_type', { appointment_type: appType });
+      }
+
+      if (specialisations) {
+        const spec = specialisations.split(' ');
+        //queryBuilder.andWhere('specialisation.name &&  :specialisation', { specialisation: spec });
+      }
+     //later we add doctor fee
+      queryBuilder.select([
+         'P.title',
+         'P.practitionerId',
+         'P.firstname',
+         'P.lastname',
+         'P.gender',
+         'P.location',
+         'P.availability',
+         'P.appointment_type',
+         'P.year_of_experience',
+         'specialisation.name',
+         'specialisation.years_of_experience',
+         'P.profession',
+         'P.bio',
+         'P.profilePictureUrl',
+      ]);
+      queryBuilder.take(Number(limit)).skip((Number(page) - 1) * Number(limit));
+
+      const [practitioners, count] = await queryBuilder.getManyAndCount();
+      const response = {
+         data: practitioners,
+         total: count,
+         page: Number(page),
+         pages: Math.ceil(count / Number(limit)),
+      };
+
+      if (!response) {
+         return formatResponse<ApiResponse.RecordNotFound>({
+            queryIdentifier: undefined,
+            message: `No Practitioner found in this area/location`,
+            statusCode: 404,
+         });
+      }
+      return formatResponse<FilteredPractitioners>(response);
    } catch (error: any) {
       throw new Error(error);
    }

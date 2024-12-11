@@ -69,16 +69,41 @@ export class Practitioner extends BaseEntity {
       type: 'varchar',
       nullable: true,
    })
+   location: string;
+
+   @Column({
+      type: 'varchar',
+      array: true,
+      nullable: true,
+      default: ['telephone', 'video', 'private_clinic'],
+   })
+   availability: Array<string>;
+
+   @Column({
+      type: 'varchar',
+      array: true,
+      nullable: true,
+      default: ['flexible', 'sameday'],
+   })
+   appointment_type: Array<string>;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
    address: string;
+
    @Column({
       type: 'varchar',
    })
    password: string;
+
    @Column({
       type: 'int',
       default: 1,
    })
    termsandconditions: string;
+
    @Column({
       type: 'int',
       default: 0,
@@ -90,6 +115,7 @@ export class Practitioner extends BaseEntity {
       nullable: true,
    })
    profession: string;
+
    @Column({
       type: 'varchar',
       nullable: true,
@@ -106,10 +132,11 @@ export class Practitioner extends BaseEntity {
    bio: string;
 
    @Column({
-      type: 'varchar',
+      type: 'int',
+      default: 1,
       nullable: true,
    })
-   experience: string;
+   year_of_experience: number;
 
    @CreateDateColumn({
       type: 'timestamp',

@@ -3,6 +3,7 @@ import { Appointment } from '../entities/appointment.entity.js';
 import { ClientHealthLogs } from '../entities/clienthealthlogs.entity.js';
 import { Insurance } from '../entities/insurance.entity.js';
 import { InsuranceProvider } from '../entities/insuranceproviders.entity.js';
+import { FilteredPractitioners, Locations } from './practitioner.types.js';
 export namespace ApiResponse {
    export interface RecordNotFound {
       statusCode: number | 404;
@@ -37,6 +38,12 @@ export namespace ApiResponse {
    export interface LoginSignUpResponseSignature {
       careconnect: LoginResponse | RecordNotFound;
    }
+   export interface PractitionerLocations {
+      careconnect: RecordNotFound | Locations[];
+   }
+  export interface PractitionerFilters {
+    careconnect: RecordNotFound | FilteredPractitioners
+  }
 }
 export interface ClientProps {
    clientId: string;

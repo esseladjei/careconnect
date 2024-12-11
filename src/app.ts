@@ -54,7 +54,7 @@ app.use('/api', authenticateToken, ProviderRoute);
 app.use('/account', AccountsRoute);
 
 app.use('/', (req: Request, res: Response) => {
-   res.send('Welcome to CareConnect API');
+   res.json('Welcome to CareConnect API');
 });
 //404 handler
 app.use((req: Request, res: Response, next: NextFunction) => {
