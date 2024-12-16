@@ -180,7 +180,7 @@ export class Practitioner extends BaseEntity {
    ratings: Rating[];
 
    @ManyToMany(() => Specialisation, (specialisation) => specialisation.practitioners, { cascade: true })
-   @JoinTable({ name: 'practitioner_specialisations' }) // This decorator defines the join table for the many-to-many relationship
+   @JoinTable({ name: 'practitioner_specialisations' })
    specialisations: Specialisation[];
 
    @ManyToMany(() => Client, (client) => client.favoritePractitioners)
