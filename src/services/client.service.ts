@@ -1,17 +1,22 @@
-import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
 import { AppDataSource } from '../config/db.js';
 import { Appointment } from '../entities/appointment.entity.js';
 import { Client } from '../entities/client.entity.js';
 import { ApiResponse, ClientProps, ValidateSignature } from '../types/entity.types.js';
 import { formatResponse, hashPassword, validatedInputs } from './utils.js';
-export const AddClient = async (client: ClientProps): Promise<ApiResponse.SignatureInsert | ValidateSignature> => {
+export const AddClient = async (client: ClientProps): Promise<ApiResponse.SignatureClient | ValidateSignature> => {
    try {
       const validationResponse = validatedInputs([{ condition: !client, message: `BadRequest: Client data is required.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
       const password = client?.password && (await hashPassword(client.password));
-      const clientData = { ...client, password };
-      const addedClient = await AppDataSource.createQueryBuilder().insert().into(Client).values(clientData).execute();
-      return formatResponse<InsertResult>(addedClient);
+
+      const clientRepo = AppDataSource.getRepository(Client);
+      const newClient = clientRepo.create({
+         ...client,
+         password,
+      });
+      const addedClient = await clientRepo.save(newClient);
+      return formatResponse<Client>(addedClient);
    } catch (error: any) {
       throw new Error(error);
    }

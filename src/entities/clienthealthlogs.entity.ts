@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 import { Client } from './client.entity.js';
 import { Practitioner } from './practitioner.entity.js';
 @Entity()
@@ -21,11 +21,11 @@ export class ClientHealthLogs extends BaseEntity {
    })
    notes: string;
   
-   @ManyToOne(() => Practitioner, (practitioner) => practitioner.practitionerId)
+   @ManyToOne(() => Practitioner, (practitioner) => practitioner.healthLogs)
    @JoinColumn({ name: 'practitionerId' })
-   practitioner: Practitioner;
+   practitioner: Relation<Practitioner>;
 
    @ManyToOne(() => Client, (client) => client.clientId)
    @JoinColumn({ name: 'clientId' })
-   client: Client;
+   client: Relation<Client>;
 }

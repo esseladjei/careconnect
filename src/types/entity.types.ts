@@ -6,6 +6,7 @@ import { InsuranceProvider } from '../entities/insuranceproviders.entity.js';
 import { FilteredPractitioners, Locations } from './practitioner.types.js';
 import { Specialisation } from '@/entities/sepcialisation.entity.js';
 import { Practitioner } from '@/entities/practitioner.entity.js';
+import { Client } from '@/entities/client.entity.js';
 export namespace ApiResponse {
    export interface RecordNotFound {
       statusCode: number | 404;
@@ -42,6 +43,9 @@ export namespace ApiResponse {
   export interface SignaturePractitioner {
      careconnect: Practitioner;
   }
+   export interface SignatureClient {
+      careconnect: Client;
+   }
    export interface SignatureInsert {
       careconnect: InsertResult;
    }
@@ -96,8 +100,9 @@ export interface PractitionerProps {
    bio?: string;
    token?: string;
    accountOption?: string;
-   specialisationIds: number[];
+   specialisationIds?: number[];
 }
+
 export type SearchParams = { clientId: string; insuranceId?: never } | { insuranceId: string; clientId?: never };
 
 export interface ValidateSignature {

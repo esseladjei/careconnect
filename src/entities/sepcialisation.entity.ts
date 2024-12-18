@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn, Relation } from 'typeorm';
 import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
@@ -13,5 +13,5 @@ export class Specialisation extends BaseEntity {
    name: string;
 
    @ManyToMany(() => Practitioner, (practitioner) => practitioner.specialisations)
-   practitioners: Practitioner[];
+   practitioners:Relation< Practitioner[]>;
 }

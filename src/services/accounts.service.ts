@@ -5,7 +5,7 @@ import { Practitioner } from '../entities/practitioner.entity.js';
 import { ApiResponse, ClientProps, LoginData, PractitionerProps, TokenProp, ValidateSignature } from '../types/entity.types.js';
 import { AddClient } from './client.service.js';
 import { AddPractitioner } from './practitioner.service.js';
-import { encodedKey, formatResponse, verifyPassword } from './utils.js';
+import { formatResponse, verifyPassword } from './utils.js';
 const isClient = async (accountData: LoginData): Promise<ApiResponse.Signature | string> => {
    try {
       const { email, password } = accountData;
@@ -96,8 +96,8 @@ export const SignUp = async (signUpData: ClientProps | PractitionerProps, role: 
       if (checkValidation.statusCode === 400) {
          return client as ValidateSignature;
       }
-      const addClientResponse = reformatResponse(client as ApiResponse.SignatureInsert);
-      const { clientId } = addClientResponse;
+      const addClientResponse = reformatResponse<ApiResponse.SignatureClient>(client as ApiResponse.SignatureClient);
+      const { clientId } = addClientResponse.careconnect;
       const payload = {
          id: clientId,
          role: 'client',
@@ -110,8 +110,8 @@ export const SignUp = async (signUpData: ClientProps | PractitionerProps, role: 
       return signedInData;
    } else {
       const practitioner = await AddPractitioner(signUpData as PractitionerProps);
-      const addPractitionerResponse = reformatResponse(practitioner as ApiResponse.SignatureInsert);
-      const { practitionerId } = addPractitionerResponse;
+      const addPractitionerResponse = reformatResponse<ApiResponse.SignaturePractitioner>(practitioner as ApiResponse.SignaturePractitioner);
+      const { practitionerId } = addPractitionerResponse.careconnect;
       const payload = {
          id: practitionerId,
          role: 'practitioner',
@@ -130,8 +130,8 @@ const generateSignedToken = (payload: TokenProp) => {
    return jwt.sign(payload, process.env.SESSION_SECRET || '', { expiresIn: '1h' });
 };
 
-const reformatResponse = (data: ApiResponse.SignatureInsert) => {
-   return { ...data.careconnect?.generatedMaps[0] };
+const reformatResponse = <T extends { careconnect: any }>(data: T): T => {
+   return { ...data.careconnect };
 };
 const formatLoginResponse = (token: string, role: string, id: string): ApiResponse.LoginSignUpResponseSignature => {
    return {

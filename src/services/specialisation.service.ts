@@ -1,8 +1,8 @@
-import { ApiResponse, ValidateSignature } from '@/types/entity.types.js';
+import { ApiResponse, ValidateSignature } from '../types/entity.types.js';
 import { Specialisation } from '../entities/sepcialisation.entity.js';
 import { formatResponse } from './utils.js';
 import { InsertResult } from 'typeorm';
-import { AppDataSource } from '@/config/db.js';
+import { AppDataSource } from '../config/db.js';
 import { validatedInputs } from './utils.js';
 export const AddSpecialisation = async (specialisationData: Specialisation): Promise<ApiResponse.SignatureInsert | ValidateSignature> => {
    try {

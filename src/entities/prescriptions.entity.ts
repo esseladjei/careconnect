@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn, Relation } from 'typeorm';
 
 import { MedicalRecord } from './medicalrecord.entity.js';
 import { Pharmacy } from './pharmacy.entity.js';
@@ -30,9 +30,9 @@ export class Prescription extends BaseEntity {
 
    @ManyToOne(() => MedicalRecord, (record) => record.prescriptions)
    @JoinColumn({ name: 'medicalRecordId' })
-   medicalRecords: MedicalRecord;
+   medicalRecords:Relation<  MedicalRecord>;
 
    @ManyToOne(() => Pharmacy, (pharmacy) => pharmacy.prescriptions)
    @JoinColumn({ name: 'pharmacyId' })
-   pharmacy: Pharmacy;
+   pharmacy:Relation< Pharmacy>;
 }

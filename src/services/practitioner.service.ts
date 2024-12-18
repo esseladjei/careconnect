@@ -1,31 +1,34 @@
 import { Practitioner } from '../entities/practitioner.entity.js';
-import { Specialisation } from '@/entities/sepcialisation.entity.js';
-import { ApiResponse, PractitionerProps, ValidateSignature } from 'src/types/entity.types.js';
+import { Specialisation } from '../entities/sepcialisation.entity.js';
+import { ApiResponse, PractitionerProps, ValidateSignature } from '../types/entity.types.js';
 import { formatResponse, validatedInputs, hashPassword } from './utils.js';
-import { AppDataSource } from 'src/config/db.js';
+import { AppDataSource } from '../config/db.js';
 import { UpdateResult, DeleteResult } from 'typeorm';
-import { Appointment } from 'src/entities/appointment.entity.js';
-import { FilteredPractitioners, Locations, PractitionerQuery } from '@/types/practitioner.types.js';
+import { Appointment } from '../entities/appointment.entity.js';
+import { FilteredPractitioners, Locations, PractitionerQuery } from '../types/practitioner.types.js';
 import { In } from 'typeorm';
 
 export const AddPractitioner = async (practitioner: PractitionerProps): Promise<ApiResponse.SignaturePractitioner | ValidateSignature> => {
-   try {
+  try {
+        let specialisations;
      const validationResponse = validatedInputs([
        { condition: !practitioner, message: `BadRequest: Practitioner data is required.`, statusCode: 400 },
        { condition: !practitioner.specialisationIds || !practitioner.specialisationIds.length, message: `BadRequest: At least one specialization is required.`, statusCode: 400 },
      ]);
       if (validationResponse) return validationResponse;
       const password = practitioner?.password && (await hashPassword(practitioner.password));
-      // Fetch the specialisations by IDs
-      const specialisationRepo = AppDataSource.getRepository(Specialisation);
-      const specialisations = await specialisationRepo.findBy({ specialisationId: In(practitioner.specialisationIds) });
-      if (specialisations.length === 0) {
-        return formatResponse<ApiResponse.RecordNotFound>({
-          queryIdentifier: 'specialisations IDs',
-          message: 'No specialisation found',
-          statusCode: 404
+     // Fetch the specialisations by IDs
+     if (practitioner.specialisationIds) {
+       const specialisationRepo = AppDataSource.getRepository(Specialisation);
+        specialisations = await specialisationRepo.findBy({ specialisationId: In(practitioner.specialisationIds) });
+       if (specialisations.length === 0) {
+         return formatResponse<ApiResponse.RecordNotFound>({
+           queryIdentifier: 'specialisations IDs',
+           message: 'No specialisation found',
+           statusCode: 404
          });
-      }
+       }
+     }
       // Create the practitioner entity
       const practitionerRepo = AppDataSource.getRepository(Practitioner);
       const newPractitioner = practitionerRepo.create({
@@ -145,20 +148,20 @@ export const GetPractitionersByFilters = async (query: PractitionerQuery): Promi
      const queryBuilder = await AppDataSource.getRepository(Practitioner).createQueryBuilder('P').leftJoinAndSelect('P.specialisations', 'specialisation').where('1=1');
       queryBuilder.andWhere('P.isActive= :active', { active: 1 });
       if (location) {
-         // queryBuilder.andWhere('P.location = :location', { location: location });
+          queryBuilder.andWhere('P.location = :location', { location: location });
       }
       if (experience) {
-         //queryBuilder.andWhere('P.year_of_experience >= :experience', { experience: Number(experience) });
+         queryBuilder.andWhere('P.year_of_experience >= :experience', { experience: Number(experience) });
       }
 
       if (availability) {
          const avail: string[] = availability.split('-');
-         // queryBuilder.andWhere('P.availability && :availability', { availability: avail });
+         queryBuilder.andWhere('P.availability && :availability', { availability: avail });
       }
 
       if (appointment_type) {
          const appType: string[] = appointment_type.split('-');
-         //queryBuilder.andWhere('P.appointment_type && :appointment_type', { appointment_type: appType });
+         queryBuilder.andWhere('P.appointment_type && :appointment_type', { appointment_type: appType });
       }
 
       if (specialisations) {

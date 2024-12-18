@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, BaseEntity , JoinColumn} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, BaseEntity , JoinColumn, Relation} from 'typeorm';
 import { Practitioner } from './practitioner.entity.js';
 @Entity()
 export class Referral extends BaseEntity {
@@ -7,9 +7,9 @@ export class Referral extends BaseEntity {
 
    @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.receivedReferrals)
    @JoinColumn({ name: 'receivedReferrals', referencedColumnName: 'practitionerId' })
-   referredDoctor: Practitioner;
+   referredDoctor: Relation< Practitioner>;
 
    @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.givenReferrals)
    @JoinColumn({ name: 'referringDoctor', referencedColumnName: 'practitionerId' })
-   referringDoctor: Practitioner;
+   referringDoctor:Relation< Practitioner>;
 }

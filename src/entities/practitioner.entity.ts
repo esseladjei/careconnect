@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Relation, Timestamp, UpdateDateColumn } from 'typeorm';
 import { Appointment } from './appointment.entity.js';
 import { Client } from './client.entity.js';
 import { MedicalRecord } from './medicalrecord.entity.js';
@@ -189,8 +189,8 @@ export class Practitioner extends BaseEntity {
 
    @OneToMany(() => Practitioner, (practitioner) => practitioner.notifications)
    @JoinColumn({ name: 'notificationId' })
-   notifications: Notification[];
+   notifications:Relation< Notification[]>;
 
    @OneToMany(() => ClientHealthLogs, (log) => log.practitioner)
-   healthLogs: ClientHealthLogs[];
+   healthLogs:Relation< ClientHealthLogs[]>;
 }
