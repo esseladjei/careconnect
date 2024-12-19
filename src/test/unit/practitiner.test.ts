@@ -1,11 +1,9 @@
+import { PractitionerProps } from '@/types/entity.types.js';
 import { AppDataSource } from 'src/config/db.js';
 import { AddPractitioner } from 'src/services/practitioner.service.js';
-import { formatResponse, validatedInputs, hashPassword } from 'src/services/utils.js';
+import { formatResponse, hashPassword, validatedInputs } from 'src/services/utils.js';
 import { InsertResult } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { Practitioner } from 'src/entities/practitioner.entity.js';
-import { PractitionerProps } from '@/types/entity.types.js';
-import { spec } from 'node:test/reporters';
 
 // Mock dependencies
 vi.mock('src/services/utils.js');
