@@ -9,26 +9,27 @@ import { FilteredPractitioners, Locations, PractitionerQuery } from '../types/pr
 import { In } from 'typeorm';
 
 export const AddPractitioner = async (practitioner: PractitionerProps): Promise<ApiResponse.SignaturePractitioner | ValidateSignature> => {
-  try {
-        let specialisations;
-     const validationResponse = validatedInputs([
-       { condition: !practitioner, message: `BadRequest: Practitioner data is required.`, statusCode: 400 },
-       { condition: !practitioner.specialisationIds || !practitioner.specialisationIds.length, message: `BadRequest: At least one specialization is required.`, statusCode: 400 },
-     ]);
+   try {
+      let specialisations;
+      const validationResponse = validatedInputs([
+         { condition: !practitioner, message: `BadRequest: Practitioner data is required.`, statusCode: 400 },
+         { condition: !practitioner?.specialisationIds || !practitioner?.specialisationIds.length, message: `BadRequest: At least one specialization is required.`, statusCode: 400 },
+      ]);
+
       if (validationResponse) return validationResponse;
       const password = practitioner?.password && (await hashPassword(practitioner.password));
-     // Fetch the specialisations by IDs
-     if (practitioner.specialisationIds) {
-       const specialisationRepo = AppDataSource.getRepository(Specialisation);
-        specialisations = await specialisationRepo.findBy({ specialisationId: In(practitioner.specialisationIds) });
-       if (specialisations.length === 0) {
-         return formatResponse<ApiResponse.RecordNotFound>({
-           queryIdentifier: 'specialisations IDs',
-           message: 'No specialisation found',
-           statusCode: 404
-         });
-       }
-     }
+      // Fetch the specialisations by IDs
+      if (practitioner.specialisationIds) {
+         const specialisationRepo = AppDataSource.getRepository(Specialisation);
+         specialisations = await specialisationRepo.findBy({ specialisationId: In(practitioner.specialisationIds) });
+         if (specialisations.length === 0) {
+            return formatResponse<ApiResponse.RecordNotFound>({
+               queryIdentifier: 'specialisations IDs',
+               message: 'No specialisation found',
+               statusCode: 404,
+            });
+         }
+      }
       // Create the practitioner entity
       const practitionerRepo = AppDataSource.getRepository(Practitioner);
       const newPractitioner = practitionerRepo.create({
@@ -38,7 +39,7 @@ export const AddPractitioner = async (practitioner: PractitionerProps): Promise<
       });
       // Save the practitioner with relationships
       const addedPractitioner = await practitionerRepo.save(newPractitioner);
-     return formatResponse<Practitioner>(addedPractitioner);
+      return formatResponse<Practitioner>(addedPractitioner);
    } catch (error: any) {
       throw new Error(error);
    }
@@ -145,10 +146,10 @@ export const GetPractitionersByFilters = async (query: PractitionerQuery): Promi
       const { location, experience, specialisations, availability, appointment_type, page = 1, limit = 10 } = query;
       const validationResponse = validatedInputs([{ condition: !query, message: `BadRequest: No search query provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-     const queryBuilder = await AppDataSource.getRepository(Practitioner).createQueryBuilder('P').leftJoinAndSelect('P.specialisations', 'specialisation').where('1=1');
+      const queryBuilder = await AppDataSource.getRepository(Practitioner).createQueryBuilder('P').leftJoinAndSelect('P.specialisations', 'specialisation').where('1=1');
       queryBuilder.andWhere('P.isActive= :active', { active: 1 });
       if (location) {
-          queryBuilder.andWhere('P.location = :location', { location: location });
+         queryBuilder.andWhere('P.location = :location', { location: location });
       }
       if (experience) {
          queryBuilder.andWhere('P.year_of_experience >= :experience', { experience: Number(experience) });
@@ -167,7 +168,7 @@ export const GetPractitionersByFilters = async (query: PractitionerQuery): Promi
       if (specialisations) {
          const spec: string[] = specialisations.split(',');
          queryBuilder.andWhere('specialisation.specialisationId IN (:...specialisations)', { specialisations: spec });
-      } 
+      }
       //later we add doctor fee
       queryBuilder.select([
          'P.title',
@@ -186,8 +187,6 @@ export const GetPractitionersByFilters = async (query: PractitionerQuery): Promi
          'P.profilePictureUrl',
       ]);
       queryBuilder.take(Number(limit)).skip((Number(page) - 1) * Number(limit));
-     const sql= await  queryBuilder.getSql();
-     console.log(sql)
       const [practitioners, count] = await queryBuilder.getManyAndCount();
       const response = {
          data: practitioners,
