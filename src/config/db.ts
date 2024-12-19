@@ -18,16 +18,16 @@ import { VideoSession } from '../entities/videosession.entity.js';
 import { Specialisation } from '../entities/sepcialisation.entity.js';
 import { InsuranceProvider } from '../entities/insuranceproviders.entity.js';
 
-dotenv.config();
-
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: envFile });
 export const AppDataSource = new DataSource({
    type: 'postgres',
-   host:  process.env.POSTGRES_HOST,
+   host: process.env.POSTGRES_HOST,
    port: Number(process.env.POSTGRES_PORT),
    username: process.env.POSTGRES_USER,
    password: process.env.POSTGRES_PASS,
    database: process.env.POSTGRES_DB,
-   synchronize: true, // Disable in production
+   synchronize: process.env.NODE_ENV === 'production' && true, // Disable in production
    logging: process.env.NODE_ENV === 'developement' ? true : false,
    entities: [
       Client,

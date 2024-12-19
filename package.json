@@ -6,6 +6,8 @@
       "build": "npx tsc -p tsconfig.base.json",
       "dev": "nodemon --watch src --ext ts --exec 'npx tsx src/server.ts' ",
       "start": "node dist/server.js",
+      "docker:dev": "docker-compose --env-file .env.development up",
+      "docker:prod": "docker-compose --env-file .env.production up --build -d",
       "test:unit": "vitest run src/test/unit",
       "test:watch": "vitest --watch src/test/unit",
       "test:ui": "vitest --ui",
