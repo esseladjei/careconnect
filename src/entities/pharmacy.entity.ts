@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany , JoinColumn} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany , JoinColumn, Relation} from 'typeorm';
 import { Prescription } from './prescriptions.entity.js';
 @Entity()
 export class Pharmacy extends BaseEntity {
@@ -27,5 +27,5 @@ export class Pharmacy extends BaseEntity {
 
    @OneToMany(() => Prescription, (prescription) => prescription.pharmacy)
    @JoinColumn({ name: 'prescriptionId' })
-   prescriptions: Prescription[];
+   prescriptions:Relation< Prescription[]>;
 }

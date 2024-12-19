@@ -12,6 +12,7 @@ import ProviderRoute from './controllers/insuranceprovider.router.js';
 import AccountsRoute from './controllers/account.router.js';
 import jwt from 'jsonwebtoken';
 import JwtPayloadCustom from './types/jwt.types.js';
+import SpecialisationRoute from './controllers/specialisation.router.js';
 const app: Application = express();
 
 const corsOptions = {
@@ -51,10 +52,11 @@ app.use('/api', authenticateToken, AppointmentRoute);
 app.use('/api', authenticateToken, HealthLogRoute);
 app.use('/api', authenticateToken, InsuranceRoute);
 app.use('/api', authenticateToken, ProviderRoute);
+app.use('/api', authenticateToken, SpecialisationRoute);
 app.use('/account', AccountsRoute);
 
 app.use('/', (req: Request, res: Response) => {
-   res.send('Welcome to CareConnect API');
+   res.json('Welcome to CareConnect API');
 });
 //404 handler
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { sendResponse } from '../services/utils.js';
 import { Login, SignUp } from '../services/accounts.service.js';
-import { ApiResponse } from '@/types/entity.types.js';
+import { ApiResponse } from '../types/entity.types.js';
 const route = express.Router();
 
 route.post('/login', async (req: Request, res: Response, next: NextFunction) => {

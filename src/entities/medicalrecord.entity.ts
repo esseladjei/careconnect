@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 import { Appointment } from './appointment.entity.js';
 import { Client } from './client.entity.js';
 import { Practitioner } from './practitioner.entity.js';
@@ -21,17 +21,17 @@ export class MedicalRecord extends BaseEntity {
 
    @OneToOne(() => Appointment)
    @JoinColumn({ name: 'appointmentId' })
-   appointment: Appointment;
+   appointment: Relation<Appointment>;
 
    @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.medicalRecords)
    @JoinColumn({ name: 'practitionerId' })
-   practitioner: Practitioner;
+   practitioner: Relation<Practitioner>;
 
    @ManyToOne(() => Client, (client) => client.medicalRecords)
    @JoinColumn({ name: 'clientId' })
-   client: Client;
+   client: Relation<Client>;
 
    @OneToMany(() => Prescription, (prescription) => prescription.medicalRecords)
    @JoinColumn({ name: 'prescriptionId' })
-   prescriptions: Prescription[];
+   prescriptions: Relation<Prescription[]>;
 }

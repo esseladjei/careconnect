@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity, Relation } from 'typeorm';
 import { Practitioner } from './practitioner.entity.js';
 import { Client } from './client.entity.js';
 
@@ -28,9 +28,9 @@ export class VideoSession extends BaseEntity {
 
    @OneToOne(() => Practitioner)
    @JoinColumn({ name: 'practitionerId' })
-   Practitioner: Practitioner;
+   Practitioner: Relation< Practitioner>;
 
    @OneToOne(() => Client)
    @JoinColumn({ name: 'clientId' })
-   client: Client;
+   client: Relation<Client>;
 }

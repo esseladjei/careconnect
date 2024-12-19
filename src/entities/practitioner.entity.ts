@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Relation, Timestamp, UpdateDateColumn } from 'typeorm';
 import { Appointment } from './appointment.entity.js';
 import { Client } from './client.entity.js';
 import { MedicalRecord } from './medicalrecord.entity.js';
@@ -69,16 +69,41 @@ export class Practitioner extends BaseEntity {
       type: 'varchar',
       nullable: true,
    })
+   location: string;
+
+   @Column({
+      type: 'varchar',
+      array: true,
+      nullable: true,
+      default: ['telephone', 'video', 'private_clinic'],
+   })
+   availability: Array<string>;
+
+   @Column({
+      type: 'varchar',
+      array: true,
+      nullable: true,
+      default: ['flexible', 'sameday'],
+   })
+   appointment_type: Array<string>;
+
+   @Column({
+      type: 'varchar',
+      nullable: true,
+   })
    address: string;
+
    @Column({
       type: 'varchar',
    })
    password: string;
+
    @Column({
       type: 'int',
       default: 1,
    })
    termsandconditions: string;
+
    @Column({
       type: 'int',
       default: 0,
@@ -90,6 +115,7 @@ export class Practitioner extends BaseEntity {
       nullable: true,
    })
    profession: string;
+
    @Column({
       type: 'varchar',
       nullable: true,
@@ -106,10 +132,11 @@ export class Practitioner extends BaseEntity {
    bio: string;
 
    @Column({
-      type: 'varchar',
+      type: 'int',
+      default: 1,
       nullable: true,
    })
-   experience: string;
+   year_of_experience: number;
 
    @CreateDateColumn({
       type: 'timestamp',
@@ -153,7 +180,7 @@ export class Practitioner extends BaseEntity {
    ratings: Rating[];
 
    @ManyToMany(() => Specialisation, (specialisation) => specialisation.practitioners, { cascade: true })
-   @JoinTable({ name: 'practitioner_specialisations' }) // This decorator defines the join table for the many-to-many relationship
+   @JoinTable({ name: 'practitioner_specialisations' })
    specialisations: Specialisation[];
 
    @ManyToMany(() => Client, (client) => client.favoritePractitioners)
@@ -162,8 +189,8 @@ export class Practitioner extends BaseEntity {
 
    @OneToMany(() => Practitioner, (practitioner) => practitioner.notifications)
    @JoinColumn({ name: 'notificationId' })
-   notifications: Notification[];
+   notifications:Relation< Notification[]>;
 
    @OneToMany(() => ClientHealthLogs, (log) => log.practitioner)
-   healthLogs: ClientHealthLogs[];
+   healthLogs:Relation< ClientHealthLogs[]>;
 }

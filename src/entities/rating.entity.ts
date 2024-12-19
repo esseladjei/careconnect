@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, JoinColumn, Relation } from 'typeorm';
 import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
@@ -23,5 +23,5 @@ export class Rating extends BaseEntity {
 
    @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.ratings)
    @JoinColumn({ name: 'practitionerId' })
-   Practitioner: Practitioner;
+   Practitioner:Relation < Practitioner>;
 }

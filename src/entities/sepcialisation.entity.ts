@@ -1,22 +1,17 @@
-import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn, Relation } from 'typeorm';
 import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
 export class Specialisation extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   specilisationId: string;
+   specialisationId: string;
 
    @Column({
       type: 'varchar',
-      default: 'General Doctor', // e.g., Cardiology, Dermatology
+      default: 'General Doctor',
    })
    name: string;
 
-   @Column({
-      type: 'varchar',
-   })
-   years_of_experience: string;
-
    @ManyToMany(() => Practitioner, (practitioner) => practitioner.specialisations)
-   practitioners: Practitioner[];
+   practitioners:Relation< Practitioner[]>;
 }

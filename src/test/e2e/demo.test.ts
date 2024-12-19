@@ -6,6 +6,6 @@ describe('GET /', () => {
    it('should return Welcome to CareConnect API', async () => {
       const res = await request(app).get('/');
       expect(res.status).toBe(200);
-      expect(res.text).toBe('Welcome to CareConnect API');
+      expect(res.body).toBe('Welcome to CareConnect API');
    });
 });
