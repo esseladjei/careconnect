@@ -1,16 +1,10 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   ManyToOne,
-   BaseEntity,
-} from 'typeorm';
-import { Doctor } from './doctor.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, JoinColumn, Relation } from 'typeorm';
+import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
 export class Rating extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   ratingId!: number;
+   ratingId: string;
 
    @Column({
       type: 'varchar',
@@ -27,6 +21,7 @@ export class Rating extends BaseEntity {
    })
    date: Date;
 
-   @ManyToOne(() => Doctor, (doctor) => doctor.ratings)
-   doctor: Doctor;
+   @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.ratings)
+   @JoinColumn({ name: 'practitionerId' })
+   Practitioner:Relation < Practitioner>;
 }

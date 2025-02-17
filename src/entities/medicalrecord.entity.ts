@@ -1,24 +1,13 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   OneToOne,
-   ManyToOne,
-   BaseEntity,
-   OneToMany,
-} from 'typeorm';
-import { Patient } from './patient.entity.ts';
-import { Doctor } from './doctor.entity.ts';
-import { Appointment } from './appointment.entity.ts';
-import { Prescription } from './prescriptions.entity.ts';
-const enum Role {
-   DOCTOR = 'doctor',
-   PATIENT = 'patient',
-}
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
+import { Appointment } from './appointment.entity.js';
+import { Client } from './client.entity.js';
+import { Practitioner } from './practitioner.entity.js';
+import { Prescription } from './prescriptions.entity.js';
+
 @Entity()
 export class MedicalRecord extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   medicalrecordsId!: number;
+   medicalrecordId: string;
 
    @Column({
       type: 'date',
@@ -31,14 +20,18 @@ export class MedicalRecord extends BaseEntity {
    notes: string;
 
    @OneToOne(() => Appointment)
-   appointment: Appointment;
+   @JoinColumn({ name: 'appointmentId' })
+   appointment: Relation<Appointment>;
 
-   @ManyToOne(() => Doctor, (doctor) => doctor.medicalRecord)
-   doctor: Doctor;
+   @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.medicalRecords)
+   @JoinColumn({ name: 'practitionerId' })
+   practitioner: Relation<Practitioner>;
 
-   @ManyToOne(() => Patient, (patient) => patient.medicalRecord)
-   patient: Patient;
+   @ManyToOne(() => Client, (client) => client.medicalRecords)
+   @JoinColumn({ name: 'clientId' })
+   client: Relation<Client>;
 
-   @OneToMany(() => Prescription, (prescription) => prescription.medicalRecord)
-   prescriptions: Prescription[];
+   @OneToMany(() => Prescription, (prescription) => prescription.medicalRecords)
+   @JoinColumn({ name: 'prescriptionId' })
+   prescriptions: Relation<Prescription[]>;
 }

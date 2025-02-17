@@ -1,17 +1,10 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   ManyToOne,
-   BaseEntity,
-   Timestamp,
-} from 'typeorm';
-import { User } from './users.entity.ts';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation, Timestamp } from 'typeorm';
+import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
 export class Notification extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   notificationId!: number;
+   notificationId: string;
 
    @Column({
       type: 'varchar',
@@ -33,6 +26,7 @@ export class Notification extends BaseEntity {
    })
    status: string;
 
-   @ManyToOne(() => User, (user) => user.notifications)
-   user: User;
+   @ManyToOne(() => Practitioner, (practioner) => practioner.notifications)
+   @JoinColumn({ name: 'practitionerId' })
+   practioner: Relation< Practitioner>;
 }

@@ -1,32 +1,38 @@
 import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   OneToOne,
-   JoinColumn,
-   BaseEntity,
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn
 } from 'typeorm';
-
-import { User } from './users.entity.ts';
+import { Client } from './client.entity.js';
+import {InsuranceProvider} from './insuranceproviders.entity.js'
 @Entity()
 export class Insurance extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   insuranceid!: number;
+   insuranceId: string;
 
-   @Column({
-      type: 'varchar',
-   })
-   providername: string;
    @Column({
       type: 'varchar',
    })
    policynumber: string;
+
    @Column({
       type: 'varchar',
    })
-   coveragedetails: string;
+   coverage_details: string;
+
    @Column({
       type: 'varchar',
    })
-   contactinfo: string;
+   contact_info: string;
+
+   @OneToOne(() => InsuranceProvider)
+   @JoinColumn({ name: 'providerId' })
+   InsuranceProvider: InsuranceProvider;
+
+   @OneToOne(() => Client)
+   @JoinColumn({ name: 'clientId' })
+   client: Client;
 }

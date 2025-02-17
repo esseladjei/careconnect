@@ -1,23 +1,12 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   OneToOne,
-   JoinColumn,
-   BaseEntity,
-   ManyToOne,
-   ManyToMany,
-   JoinTable,
-} from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn, Relation } from 'typeorm';
 
-import { MedicalRecord } from './medicalrecord.entity.ts';
-import { Pharmacy } from './pharmacy.entity.ts';
-import { Specialisation } from './sepcialisation.entity.ts';
+import { MedicalRecord } from './medicalrecord.entity.js';
+import { Pharmacy } from './pharmacy.entity.js';
 
 @Entity()
 export class Prescription extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   prescriptionId!: number;
+   prescriptionId: string;
 
    @Column({
       type: 'varchar',
@@ -40,8 +29,10 @@ export class Prescription extends BaseEntity {
    duration: string;
 
    @ManyToOne(() => MedicalRecord, (record) => record.prescriptions)
-   medicalRecord: MedicalRecord;
+   @JoinColumn({ name: 'medicalRecordId' })
+   medicalRecords:Relation<  MedicalRecord>;
 
    @ManyToOne(() => Pharmacy, (pharmacy) => pharmacy.prescriptions)
-   pharmacy: Pharmacy;
+   @JoinColumn({ name: 'pharmacyId' })
+   pharmacy:Relation< Pharmacy>;
 }

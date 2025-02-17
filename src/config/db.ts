@@ -1,23 +1,25 @@
-import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
-import { User } from '../entities/users.entity.ts';
-import { Patient } from '../entities/patient.entity.ts';
-import { Doctor } from 'src/entities/doctor.entity.ts';
-import { DoctorFees } from 'src/entities/doctorfees.entity.ts';
-import { Insurance } from 'src/entities/insurance.entity.ts';
-import { Appointment } from 'src/entities/appointment.entity.ts';
-import { MedicalRecord } from 'src/entities/medicalrecord.entity.ts';
-import { Prescription } from 'src/entities/prescriptions.entity.ts';
-import { Pharmacy } from 'src/entities/pharmacy.entity.ts';
-import { PatientHealthLogs } from 'src/entities/patienthealthlogs.entity.ts';
-import { Notification } from 'src/entities/notification.entity.ts';
-import { Rating } from 'src/entities/rating.entity.ts';
-import { BillingInvoice } from 'src/entities/billinginvoices.entity.ts';
-import { VideoSession } from 'src/entities/videosession.entity.ts';
-import { Payment } from 'src/entities/payment.entity.ts';
-import { Referral } from 'src/entities/referrals.entity.ts';
-dotenv.config();
+import { DataSource } from 'typeorm';
+import { Appointment } from '../entities/appointment.entity.js';
+import { BillingInvoice } from '../entities/billinginvoices.entity.js';
+import { Client } from '../entities/client.entity.js';
+import { ClientHealthLogs } from '../entities/clienthealthlogs.entity.js';
+import { Insurance } from '../entities/insurance.entity.js';
+import { MedicalRecord } from '../entities/medicalrecord.entity.js';
+import { Notification } from '../entities/notification.entity.js';
+import { Payment } from '../entities/payment.entity.js';
+import { Pharmacy } from '../entities/pharmacy.entity.js';
+import { Practitioner } from '../entities/practitioner.entity.js';
+import { PractitionerFees } from '../entities/practitionerfees.entity.js';
+import { Prescription } from '../entities/prescriptions.entity.js';
+import { Rating } from '../entities/rating.entity.js';
+import { Referral } from '../entities/referrals.entity.js';
+import { VideoSession } from '../entities/videosession.entity.js';
+import { Specialisation } from '../entities/sepcialisation.entity.js';
+import { InsuranceProvider } from '../entities/insuranceproviders.entity.js';
 
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: envFile });
 export const AppDataSource = new DataSource({
    type: 'postgres',
    host: process.env.POSTGRES_HOST,
@@ -25,23 +27,25 @@ export const AppDataSource = new DataSource({
    username: process.env.POSTGRES_USER,
    password: process.env.POSTGRES_PASS,
    database: process.env.POSTGRES_DB,
-   synchronize: true, // Disable in production
+   synchronize:true, // Disable in production
+   logging: process.env.NODE_ENV === 'developement' ? true : false,
    entities: [
-      User,
-      Patient,
-      Doctor,
-      DoctorFees,
+      Client,
+      Practitioner,
+      PractitionerFees,
       Insurance,
       Appointment,
       MedicalRecord,
       Prescription,
       Pharmacy,
-      PatientHealthLogs,
+      ClientHealthLogs,
       Notification,
       Rating,
       BillingInvoice,
       VideoSession,
       Payment,
       Referral,
+      Specialisation,
+      InsuranceProvider,
    ],
 });

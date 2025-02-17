@@ -1,4 +1,6 @@
-FROM node:18
+# Base Stage
+
+FROM node:20 as base
 
 WORKDIR /app
 
@@ -10,6 +12,12 @@ COPY . .
 
 EXPOSE 5000
 
+# Development Stage
+FROM base As Development
 RUN npm run build
+CMD ["npm", "run","dev"]
 
-CMD ["node", "dist/server.js"]
+# Production Stage
+FROM base As Production
+RUN npm run build
+CMD ["npm", "run","start"]

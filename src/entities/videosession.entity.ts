@@ -1,19 +1,11 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   OneToOne,
-   JoinColumn,
-   BaseEntity,
-} from 'typeorm';
-import { Doctor } from './doctor.entity.ts';
-import { Patient } from './patient.entity.ts';
-import { Timestamp } from 'typeorm/browser';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity, Relation } from 'typeorm';
+import { Practitioner } from './practitioner.entity.js';
+import { Client } from './client.entity.js';
 
 @Entity()
 export class VideoSession extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   sessionId!: number;
+   sessionId: string;
 
    @Column({
       type: 'varchar',
@@ -27,18 +19,18 @@ export class VideoSession extends BaseEntity {
    @Column({
       type: 'timestamp',
    })
-   start_time: Timestamp;
+   start_time: Date;
 
    @Column({
       type: 'timestamp',
    })
-   end_time: Timestamp;
+   end_time: Date;
 
-   @OneToOne(() => Doctor)
-   @JoinColumn()
-   doctor: Doctor;
+   @OneToOne(() => Practitioner)
+   @JoinColumn({ name: 'practitionerId' })
+   Practitioner: Relation< Practitioner>;
 
-   @OneToOne(() => Patient)
-   @JoinColumn()
-   patient: Patient;
+   @OneToOne(() => Client)
+   @JoinColumn({ name: 'clientId' })
+   client: Relation<Client>;
 }

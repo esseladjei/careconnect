@@ -1,30 +1,17 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   OneToOne,
-   JoinColumn,
-   Column,
-   ManyToMany,
-} from 'typeorm';
-import { Biodata } from './biodata.entity.ts';
-import { User } from './users.entity.ts';
-import { Doctor } from './doctor.entity.ts';
+import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn, Relation } from 'typeorm';
+import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
-export class Specialisation extends Biodata {
+export class Specialisation extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-  specilisationid!: number;
+   specialisationId: string;
 
    @Column({
       type: 'varchar',
+      default: 'General Doctor',
    })
-   specialisation: string;
+   name: string;
 
-   @Column({
-      type: 'varchar',
-   })
-   years_of_experience: string;
-
-   @ManyToMany(() => Doctor)
-   doctors: Doctor[];
+   @ManyToMany(() => Practitioner, (practitioner) => practitioner.specialisations)
+   practitioners:Relation< Practitioner[]>;
 }

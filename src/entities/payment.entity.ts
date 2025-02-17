@@ -1,14 +1,6 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   BaseEntity,
-   ManyToOne,
-   OneToOne,
-   Decimal128,
-} from 'typeorm';
-import { Patient } from './patient.entity.ts';
-import { Appointment } from './appointment.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToOne, Decimal128, JoinColumn, Relation } from 'typeorm';
+import { Client } from './client.entity.js';
+import { Appointment } from './appointment.entity.js';
 const enum PaymentStatus {
    PENDING = 'pending',
    PAID = 'paid',
@@ -16,7 +8,7 @@ const enum PaymentStatus {
 @Entity()
 export class Payment extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   paymentId!: number;
+   paymentId: string;
 
    @Column({
       type: 'varchar',
@@ -34,8 +26,9 @@ export class Payment extends BaseEntity {
    amount: Decimal128;
 
    @OneToOne(() => Appointment)
-   appointment: Appointment;
+   appointment:Relation< Appointment>;
 
-   @ManyToOne(() => Patient, (patient) => patient.payments)
-   patient: Patient;
+   @ManyToOne(() => Client, (client) => client.payments)
+   @JoinColumn({ name: 'clientId' })
+   client:Relation< Client>;
 }

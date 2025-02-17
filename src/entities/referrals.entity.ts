@@ -1,12 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, BaseEntity } from 'typeorm';
-import { Doctor } from './doctor.entity.ts';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, BaseEntity , JoinColumn, Relation} from 'typeorm';
+import { Practitioner } from './practitioner.entity.js';
 @Entity()
 export class Referral extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   referralId: number;
-   @ManyToOne(() => Doctor, (doctor) => doctor.receivedReferrals)
-   referredDoctor: Doctor;
+   referralId: string;
 
-   @ManyToOne(() => Doctor, (doctor) => doctor.givenReferrals)
-   referringDoctor: Doctor;
+   @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.receivedReferrals)
+   @JoinColumn({ name: 'receivedReferrals', referencedColumnName: 'practitionerId' })
+   referredDoctor: Relation< Practitioner>;
+
+   @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.givenReferrals)
+   @JoinColumn({ name: 'referringDoctor', referencedColumnName: 'practitionerId' })
+   referringDoctor:Relation< Practitioner>;
 }

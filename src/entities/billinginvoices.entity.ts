@@ -1,19 +1,12 @@
-import {
-   Entity,
-   PrimaryGeneratedColumn,
-   Column,
-   OneToOne,
-   JoinColumn,
-   BaseEntity,
-   Decimal128,
-} from 'typeorm';
-import { Doctor } from './doctor.entity.ts';
-import { Patient } from './patient.entity.ts';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, BaseEntity, Decimal128,Relation } from 'typeorm';
+import { Practitioner } from './practitioner.entity.js';
+import { Client } from './client.entity.js';
+
 
 @Entity()
 export class BillingInvoice extends BaseEntity {
    @PrimaryGeneratedColumn('uuid')
-   invoiceId!: number;
+   invoiceId: string;
 
    @Column({
       type: 'date',
@@ -35,11 +28,11 @@ export class BillingInvoice extends BaseEntity {
    })
    amount: Decimal128;
 
-   @OneToOne(() => Doctor)
-   @JoinColumn()
-   doctor: Doctor;
+   @OneToOne(() => Practitioner)
+   @JoinColumn({ name: 'practitionerId', referencedColumnName: 'practitionerId' })
+   Practitioner: Relation< Practitioner>;
 
-   @OneToOne(() => Patient)
-   @JoinColumn()
-   patient: Patient;
+   @OneToOne(() => Client)
+   @JoinColumn({ name: 'clientId', referencedColumnName: 'clientId' })
+   client:Relation< Client>;
 }

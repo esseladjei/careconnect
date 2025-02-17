@@ -10,15 +10,29 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - '5432:5432'
-  app:
+    networks:
+      - careconnect-network  # Add this line to connect to the network
+
+  nodeserver:
     build: .
     container_name: NodeRestAPI
     volumes:
       - .:/app
+      - /app/node_modules
     ports:
       - '5000:5000'
+    env_file:
+      - .env.${NODE_ENV}  # Dynamically load the correct .env file
+      
+    command: >
+      sh -c "if [ \"$NODE_ENV\" = 'production' ]; then npm start; else npm run dev; fi"
+
     depends_on:
       - POSTGRES
+    
+    networks:
+      - careconnect-network  # Add this line to connect to the network
+
 networks:
   careconnect-network:
     driver: bridge
