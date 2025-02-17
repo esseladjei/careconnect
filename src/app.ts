@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import cors from 'cors';
+import createHttpError from 'http-errors';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import errorHandler from './error.js';
@@ -10,9 +11,11 @@ import HealthLogRoute from './controllers/healthlog.router.js';
 import InsuranceRoute from './controllers/insurance.router.js';
 import ProviderRoute from './controllers/insuranceprovider.router.js';
 import AccountsRoute from './controllers/account.router.js';
+import SpecialisationRoute from './controllers/specialisation.router.js';
+import FeeRoute from './controllers/practitionerfee.router.js';
 import jwt from 'jsonwebtoken';
 import JwtPayloadCustom from './types/jwt.types.js';
-import SpecialisationRoute from './controllers/specialisation.router.js';
+
 const app: Application = express();
 
 const corsOptions = {
@@ -53,6 +56,7 @@ app.use('/api', authenticateToken, HealthLogRoute);
 app.use('/api', authenticateToken, InsuranceRoute);
 app.use('/api', authenticateToken, ProviderRoute);
 app.use('/api', authenticateToken, SpecialisationRoute);
+app.use('/api', authenticateToken, FeeRoute);
 app.use('/account', AccountsRoute);
 
 app.use('/', (req: Request, res: Response) => {
@@ -60,8 +64,7 @@ app.use('/', (req: Request, res: Response) => {
 });
 //404 handler
 app.use((req: Request, res: Response, next: NextFunction) => {
-   res.status(404).json({ message: 'Not found' });
-   // next(createHttpError(404, 'Not found'));
+   return  next(createHttpError(404, 'Not found'));
 });
 app.use(errorHandler);
 export default app;
