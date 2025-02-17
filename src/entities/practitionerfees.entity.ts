@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Decimal128, ManyToOne,JoinColumn, Relation } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Decimal128, ManyToOne, JoinColumn, Relation } from 'typeorm';
 import { Practitioner } from './practitioner.entity.js';
 
 @Entity()
@@ -8,11 +8,8 @@ export class PractitionerFees extends BaseEntity {
 
    @Column({
       type: 'varchar',
-   })
-   specialisation: string;
-
-   @Column({
-      type: 'varchar',
+      length: 500,
+      default: 'Diagnose disease, provide treatment, counsel patients with injuries, diseases or illnesses.',
    })
    service: string;
 
@@ -23,5 +20,5 @@ export class PractitionerFees extends BaseEntity {
 
    @ManyToOne(() => Practitioner, (Practitioner) => Practitioner.fees)
    @JoinColumn({ name: 'practitionerId' })
-   Practitioner:Relation< Practitioner>;
+   practitioner: Relation<Practitioner>;
 }

@@ -143,10 +143,14 @@ export const GetPractitionerLocations = async (query: string): Promise<ApiRespon
 };
 export const GetPractitionersByFilters = async (query: PractitionerQuery): Promise<ApiResponse.PractitionerFilters> => {
    try {
-      const { location, experience, specialisations, availability, appointment_type, page = 1, limit = 10 } = query;
+      const { location, experience, specialisations, availability, appointment_type, fee, page = 1, limit = 10 } = query;
       const validationResponse = validatedInputs([{ condition: !query, message: `BadRequest: No search query provided.`, statusCode: 400 }]);
       if (validationResponse) return validationResponse;
-      const queryBuilder = await AppDataSource.getRepository(Practitioner).createQueryBuilder('P').leftJoinAndSelect('P.specialisations', 'specialisation').where('1=1');
+      const queryBuilder = await AppDataSource.getRepository(Practitioner)
+         .createQueryBuilder('P')
+         .leftJoinAndSelect('P.specialisations', 'specialisation')
+         .innerJoinAndSelect('P.fees', 'fees')
+         .where('1=1');
       queryBuilder.andWhere('P.isActive= :active', { active: 1 });
       if (location) {
          queryBuilder.andWhere('P.location = :location', { location: location });
@@ -169,6 +173,14 @@ export const GetPractitionersByFilters = async (query: PractitionerQuery): Promi
          const spec: string[] = specialisations.split(',');
          queryBuilder.andWhere('specialisation.specialisationId IN (:...specialisations)', { specialisations: spec });
       }
+      if (fee) {
+         const [minFee, maxFee] = fee.split('-');
+         queryBuilder.andWhere('fees.fee BETWEEN :minFee AND :maxFee', {
+            minFee: parseFloat(minFee),
+            maxFee: parseFloat(maxFee),
+         });
+      }
+
       //later we add doctor fee
       queryBuilder.select([
          'P.title',
@@ -185,6 +197,8 @@ export const GetPractitionersByFilters = async (query: PractitionerQuery): Promi
          'P.profession',
          'P.bio',
          'P.profilePictureUrl',
+         'fees.fee',
+         'fees.service',
       ]);
       queryBuilder.take(Number(limit)).skip((Number(page) - 1) * Number(limit));
       const [practitioners, count] = await queryBuilder.getManyAndCount();
@@ -194,16 +208,16 @@ export const GetPractitionersByFilters = async (query: PractitionerQuery): Promi
          page: Number(page),
          pages: Math.ceil(count / Number(limit)),
       };
-
       if (!response) {
          return formatResponse<ApiResponse.RecordNotFound>({
             queryIdentifier: undefined,
-            message: `No Practitioner found in this area/location`,
+            message: `No Practitioner found with selected search parameters`,
             statusCode: 404,
          });
       }
       return formatResponse<FilteredPractitioners>(response);
    } catch (error: any) {
+      console.error(error);
       throw new Error(error);
    }
 };

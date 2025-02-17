@@ -6,6 +6,7 @@ import { ApiResponse, ClientProps, LoginData, PractitionerProps, TokenProp, Vali
 import { AddClient } from './client.service.js';
 import { AddPractitioner } from './practitioner.service.js';
 import { formatResponse, verifyPassword } from './utils.js';
+const expiresIn = 2;
 const isClient = async (accountData: LoginData): Promise<ApiResponse.Signature | string> => {
    try {
       const { email, password } = accountData;
@@ -127,7 +128,7 @@ export const SignUp = async (signUpData: ClientProps | PractitionerProps, role: 
 
 // Generate a token
 const generateSignedToken = (payload: TokenProp) => {
-   return jwt.sign(payload, process.env.SESSION_SECRET || '', { expiresIn: '1h' });
+   return jwt.sign(payload, process.env.SESSION_SECRET || '', { expiresIn: `${expiresIn}h` });
 };
 
 const reformatResponse = <T extends { careconnect: any }>(data: T): T => {
@@ -139,6 +140,22 @@ const formatLoginResponse = (token: string, role: string, id: string): ApiRespon
          id,
          role,
          token,
+         expiryTime: expiresIn * 60 * 60, // 2 hours in seconds
       },
    };
+};
+
+export const validateSession = (token: string): Promise<any> => {
+   return new Promise((resolve, reject) => {
+      jwt.verify(token, process.env.SESSION_SECRET || '', (err, decoded) => {
+         if (err) {
+            return reject(new Error('Forbidden: Session expired!'));
+         }
+         if (typeof decoded === 'object' && 'id' in decoded && 'role' in decoded) {
+            const user = decoded as TokenProp;
+            return resolve(user);
+         }
+         return reject(new Error('Invalid token payload'));
+      });
+   });
 };

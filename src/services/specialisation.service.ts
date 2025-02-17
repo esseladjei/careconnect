@@ -30,3 +30,4 @@ export const getAllSpecialisations = async (): Promise<ApiResponse.Signature> =>
       throw new Error(error);
    }
 };
+//to be implemented Update and Delete

@@ -18,6 +18,7 @@ export namespace ApiResponse {
       token: string;
       role: string;
       id: string;
+      expiryTime:number
    }
    export interface WrongPassword {
       statusCode: 406;

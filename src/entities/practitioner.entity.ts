@@ -163,8 +163,7 @@ export class Practitioner extends BaseEntity {
    @JoinColumn({ name: 'paymentId' })
    payments: Payment[];
 
-   @OneToMany(() => PractitionerFees, (fee) => fee.Practitioner)
-   @JoinColumn({ name: 'feeId' })
+   @OneToMany(() => PractitionerFees, (fee) => fee.practitioner)
    fees: PractitionerFees[];
 
    @OneToMany(() => Referral, (referral) => referral.referringDoctor)
@@ -189,8 +188,8 @@ export class Practitioner extends BaseEntity {
 
    @OneToMany(() => Practitioner, (practitioner) => practitioner.notifications)
    @JoinColumn({ name: 'notificationId' })
-   notifications:Relation< Notification[]>;
+   notifications: Relation<Notification[]>;
 
    @OneToMany(() => ClientHealthLogs, (log) => log.practitioner)
-   healthLogs:Relation< ClientHealthLogs[]>;
+   healthLogs: Relation<ClientHealthLogs[]>;
 }
